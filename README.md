@@ -1,13 +1,17 @@
-<!--ts-->
-      * [Screenshots](#screenshots)
-      * [Installation](#installation)
-      * [Usage](#usage)
-      * [Global Variables](#global-variables)
-      * [Command](#command)
-      * [Default Mappings](#default-mappings)
-      * [Default Highlights](#default-highlights)
+# Fterm
 
-<!-- Added by: zhiyuan, at: 2020年 11月 15日 星期日 18:51:10 CST -->
+<!--ts-->
+   - [Fterm](#fterm)
+      - [Screenshots](#screenshots)
+      - [Installation](#installation)
+      - [Usage](#usage)
+      - [Global Variables](#global-variables)
+      - [Command](#command)
+      - [Default Mappings](#default-mappings)
+      - [Default Highlights](#default-highlights)
+      - [Support for <a href="https://github.com/skywind3000/asyncrun.vim">asyncrun.vim</a>](#support-for-asyncrunvim)
+
+<!-- Added by: zhiyuan, at: 2020年 11月 15日 星期日 18:58:51 CST -->
 
 <!--te-->
 
@@ -183,5 +187,11 @@ let g:fterm_highlights = {
       \ }
 ```
 
+## Support for [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim)
+
+```vim
+let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
+let g:asyncrun_runner.fterm = function('fterm#async_runner')
+```
 
   [1]: https://github.com/ZhiyuanLck/images/blob/master/fterm/fterm.gif
