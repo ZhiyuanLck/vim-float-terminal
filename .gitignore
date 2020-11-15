@@ -114,3 +114,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# toc
+*.md.orig*
+*.md.toc*

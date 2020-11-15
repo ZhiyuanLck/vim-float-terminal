@@ -7,27 +7,26 @@
       * [Default Mappings](#default-mappings)
       * [Default Highlights](#default-highlights)
 
-<!-- Added by: zhiyuan, at: 2020年 11月 15日 星期日 18:44:48 CST -->
+<!-- Added by: zhiyuan, at: 2020年 11月 15日 星期日 18:51:10 CST -->
 
 <!--te-->
 
 Simple vim terminal in popup window with a termline.
 
-Screenshots
------------
+## Screenshots
 
 ![buffer][1]
 
-Installation
------------
+## Installation
+
 Python3 support and vim-features `+popup`, `+terminal` are required.
 
 ```vim
 Plug 'ZhiyuanLck/vim-float-terminal'
 ```
 
-Usage
------------
+## Usage
+
 ```
 usage: Fterm [-h] {new,toggle,kill,select,settitle,move} ...
 
@@ -99,8 +98,7 @@ optional arguments:
   --end       move current tab to end
 ```
 
-Global Variables
-----------------
+## Global Variables
 
 | Variables                     | Default Value                              | Description
 | ---------                     | ------------                               | -----------
@@ -117,8 +115,8 @@ Global Variables
 | `g:fterm_title`               | `fterm`                                    | default title
 | `g:fterm_highlights`          |                                            | highlight setting
 
-Command
--------
+## Command
+
 ```vim
 command! -bar -complete=customlist,fterm#complete -nargs=+ Fterm call fterm#cmd(<f-args>)
 command! -bar -nargs=* FtermNew Fterm new <args>
@@ -134,8 +132,7 @@ command! -bar -nargs=1 FtermMoveLeft Fterm move --left <args>
 command! -bar -nargs=1 FtermMoveRight Fterm move --right <args>
 ```
 
-Default Mappings
---------
+## Default Mappings
 
 ```vim
 noremap <silent><leader>c :<c-u>FtermNew<cr>
@@ -156,8 +153,8 @@ for i in range(1, 9)
 endfor
 ```
 
-Default Highlights
------------------
+## Default Highlights
+
 ```vim
 let g:fterm_highlights = {
       \ "fterm_hl_border": {
