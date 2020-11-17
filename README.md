@@ -10,6 +10,7 @@
       - [Default Mappings](#default-mappings)
       - [Default Highlights](#default-highlights)
       - [Support for <a href="https://github.com/skywind3000/asyncrun.vim">asyncrun.vim</a>](#support-for-asyncrunvim)
+      - [Known issues](#known-issues)
 
 <!-- Added by: zhiyuan, at: 2020年 11月 15日 星期日 18:58:51 CST -->
 
@@ -193,5 +194,11 @@ let g:fterm_highlights = {
 let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
 let g:asyncrun_runner.fterm = function('fterm#async_runner')
 ```
+
+## Known issues
+
+1. Cursor position wrong in terminal popup with finished job. Fixed in [patch 8.2.1990](https://github.com/vim/vim/commit/6a07644db30cb5f3d0c6dc5eb2c348b6289da553).
+
+2. Patch 8.2.1990 cause new problem: window changes when using bufload() while in a terminal popup. Fixed in [patch 8.2.1997](https://github.com/vim/vim/commit/8adc8d9b73121b647476a33d91d31d25e1c2d987). This issue will **cause the plugin to not work properly**.
 
   [1]: https://github.com/ZhiyuanLck/images/blob/master/fterm/fterm.gif

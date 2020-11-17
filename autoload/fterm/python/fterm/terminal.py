@@ -115,8 +115,6 @@ class Fterm(object):
         opts["border"], opts["borderchars"] = get_terminal_border()
         opts["highlight"] = ftget("hl_terminal_body", "'fterm_hl_terminal_body'")
         self.winid = vimeval("popup_create({}, {})".format(self.bufnr, str(opts)), 1)
-        # why need this line?
-        vimcmd("call setbufvar({}, '&number', 1)".format(self.lastbuf))
         self.termline.build_line()
 
     def close_popup(self):

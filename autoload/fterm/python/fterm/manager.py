@@ -18,17 +18,10 @@ class Manager(object):
         self.termline = FtermLine(self)
         self.cur_termnr = -1
         self.show = False
-        self.issue()
         self.init_parser()
 
     def issue(self):
-        pass
-        # cause problem
-        #  if vimeval("hasmapto('<esc>', 'l')") == '1':
-            #  print('yes')
-            #  vimsg('Error', "map <esc> in terminal mode may cause problem, <c-[> is mapped instead.")
-            #  vimcmd("tunmap <esc>")
-            #  vimcmd(r"tmap <c-[> <c-\><c-n>")
+        return vimeval("fterm#issue#patch_821990()", 1)
 
     def init_parser(self):
         parser = argparse.ArgumentParser(prog='Fterm')
@@ -65,7 +58,8 @@ class Manager(object):
         self.parser = parser
 
     def start(self, arglist):
-        #  arglist = FtShlex(cmdline, posix=False).split()
+        if self.issue():
+            return
         try:
             args = self.parser.parse_args(arglist)
             self.args = args
