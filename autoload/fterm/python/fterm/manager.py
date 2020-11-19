@@ -177,6 +177,12 @@ class Manager(object):
         if right is not None:
             termline.move_right(right)
 
+    def edit_in_vim(self, path):
+        print(path)
+        if self.show:
+            self.toggle_term()
+        cmd = ftget("open_cmd", "'tabedit'")
+        vimcmd("{} {}".format(cmd, path))
 
     def async_run(self):
         cmd = []

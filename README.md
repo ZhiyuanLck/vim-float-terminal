@@ -11,6 +11,7 @@
       - [Default Highlights](#default-highlights)
       - [Support for <a href="https://github.com/skywind3000/asyncrun.vim">asyncrun.vim</a>](#support-for-asyncrunvim)
       - [Known issues](#known-issues)
+      - [Reference](#reference)
 
 <!-- Added by: zhiyuan, at: 2020年 11月 15日 星期日 18:58:51 CST -->
 
@@ -111,6 +112,7 @@ optional arguments:
 | `g:fterm_width`               | `0.75`                                     | width of the terminal
 | `g:fterm_height`              | `0.75`                                     | height of the terminal
 | `g:fterm_autoquit`            | `0`                                        | kill the terminal automatically when leaving vim
+| `g:fterm_open_cmd`            | `tabedit`                                  | command to edit file from terminal
 | `g:fterm_exclude_cmdline`     | `1`                                        | exclude the cmdline when calculating the height of terminal
 | `g:fterm_exclude_statusline`  | `1`                                        | exclude the statusline when calculating the height of terminal
 | `g:fterm_exclude_tabline`     | `1`                                        | exclude the tabline when calculating the height of terminal
@@ -200,5 +202,8 @@ let g:asyncrun_runner.fterm = function('fterm#async_runner')
 1. Cursor position wrong in terminal popup with finished job. Fixed in [patch 8.2.1990](https://github.com/vim/vim/commit/6a07644db30cb5f3d0c6dc5eb2c348b6289da553).
 
 2. Patch 8.2.1990 cause new problem: window changes when using bufload() while in a terminal popup. Fixed in [patch 8.2.1997](https://github.com/vim/vim/commit/8adc8d9b73121b647476a33d91d31d25e1c2d987). This issue will **cause the plugin to not work properly**.
+
+## Reference
+[vim-floaterm](https://github.com/voldikss/vim-floaterm)
 
   [1]: https://github.com/ZhiyuanLck/images/blob/master/fterm/fterm.gif

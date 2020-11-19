@@ -1,0 +1,31 @@
+#!/bin/sh
+# from https://github.com/voldikss/vim-floaterm/blob/master/bin/floaterm
+
+absolute_path() {
+    local result=""
+    if [ -x "$(which realpath 2> /dev/null)" ]; then
+        result="$(realpath -s """$1""" 2> /dev/null)"
+    fi
+    if [ -z "$result" ] && [ -x "$(which perl 2> /dev/null)" ]; then
+        result="$(perl -MCwd -e 'print Cwd::realpath($ARGV[0])' """$1""")"
+    fi
+    if [ -z "$result" ] && [ -x "$(which python 2> /dev/null)" ]; then
+        result="$(python -c 'import sys, os;sys.stdout.write(os.path.abspath(sys.argv[1]))' """$1""")"
+    fi
+    if [ -z "$result" ] && [ -x "$(which python3 2> /dev/null)" ]; then
+        result="$(python3 -c 'import sys, os;sys.stdout.write(os.path.abspath(sys.argv[1]))' """$1""")"
+    fi
+    if [ -z "$result" ] && [ -x "$(which python2 2> /dev/null)" ]; then
+        result="$(python2 -c 'import sys, os;sys.stdout.write(os.path.abspath(sys.argv[1]))' """$1""")"
+    fi
+    if [ -z "$result" ] && [ -x "$(which realpath 2> /dev/null)" ]; then
+        result="$(realpath """$1""")"
+    fi
+    if [ -z "$result" ]; then
+        result="$1"
+    fi
+    echo $result
+}
+
+name="$(absolute_path """$1""")"
+printf '\033]51;["call", "fterm#edit", "%s"]\007' "$name"

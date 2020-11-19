@@ -93,6 +93,7 @@ class Fterm(object):
         opts["term_cols"] = self.width
         opts["term_rows"] = self.height
         opts["cwd"] = self.cwd
+        opts["term_api"] = "fterm#edit"
         self.bufnr = vimeval(r"""term_start("{}", {})""".format(cmd, opts), 1)
         if ftget("autoquit", 0) == '1':
             vimcmd("call term_setkill({}, 'kill')".format(self.bufnr))

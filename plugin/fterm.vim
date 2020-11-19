@@ -12,6 +12,7 @@ call s:init_var('exclude_cmdline', 1)
 call s:init_var('exclude_statusline', 1)
 call s:init_var('exclude_tabline', 1)
 call s:init_var('exclude_signcolumn', 0)
+call s:init_var('open_cmd', 'tabedit')
 " termline
 call s:init_var('borderchars',
       \ ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
