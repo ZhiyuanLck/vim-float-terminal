@@ -9,6 +9,7 @@
       - [Command](#command)
       - [Default Mappings](#default-mappings)
       - [Default Highlights](#default-highlights)
+      - [Edit file from terminal](#edit-file-from-terminal)
       - [Support for <a href="https://github.com/skywind3000/asyncrun.vim">asyncrun.vim</a>](#support-for-asyncrunvim)
       - [Known issues](#known-issues)
       - [Reference](#reference)
@@ -189,6 +190,10 @@ let g:fterm_highlights = {
       \   },
       \ }
 ```
+
+## Edit file from terminal
+
+When in float terminal, you can use `fterm` to open a file in vim.
 
 ## Support for [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim)
 
