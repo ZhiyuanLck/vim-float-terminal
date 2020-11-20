@@ -13,7 +13,7 @@ call s:init_var('exclude_statusline', 1)
 call s:init_var('exclude_tabline', 1)
 call s:init_var('exclude_signcolumn', 0)
 call s:init_var('open_cmd', 'tabedit')
-call s:init_var('noquit', ['\v(\S|/)*bash$', '\v(\S|/)*zsh$', '\v(\S|/)*ksh$', '\v(\S|/)*csh$', '\v(\S|/)*tcsh$'])
+call s:init_var('noquit', ['\v(\w|/)*bash$', '\v(\w|/)*zsh$', '\v(\w|/)*ksh$', '\v(\w|/)*csh$', '\v(\w|/)*tcsh$'])
 " termline
 call s:init_var('borderchars',
       \ ['─', '│', '─', '│', '┌', '┐', '┘', '└'])

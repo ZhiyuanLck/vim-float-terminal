@@ -182,15 +182,15 @@ endfor
 
 ## Quick quit
 
-You can quit the terminal quickly by command `FtermQuit` which is map to the key specified by `g:fterm_map_quit` (by default `q`). The keymap is disabled when certain pattern is matched in command to start the terminal. This work is done by vim built-in function `match()`. The default pattern list is
+You can quit the terminal quickly by command `FtermQuit` which is mapped to the key specified by `g:fterm_map_quit` (by default `q`). The keymap is disabled when certain pattern is matched in command to start the terminal. This work is done by vim built-in function `match()`. The default pattern list is
 
 ```vim
 let g:fterm_noquit=[
-      \ '\v(\S|/)*bash$',
-      \ '\v(\S|/)*zsh$',
-      \ '\v(\S|/)*ksh$',
-      \ '\v(\S|/)*csh$',
-      \ '\v(\S|/)*tcsh$'
+      \ '\v(\w|/)*bash$',
+      \ '\v(\w|/)*zsh$',
+      \ '\v(\w|/)*ksh$',
+      \ '\v(\w|/)*csh$',
+      \ '\v(\w|/)*tcsh$'
       \ ]
 ```
 
