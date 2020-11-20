@@ -13,6 +13,7 @@ call s:init_var('exclude_statusline', 1)
 call s:init_var('exclude_tabline', 1)
 call s:init_var('exclude_signcolumn', 0)
 call s:init_var('open_cmd', 'tabedit')
+call s:init_var('noquit', ['\v(\S|/)*bash$', '\v(\S|/)*zsh$', '\v(\S|/)*ksh$', '\v(\S|/)*csh$', '\v(\S|/)*tcsh$'])
 " termline
 call s:init_var('borderchars',
       \ ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
@@ -28,6 +29,7 @@ call s:init_var('hl_termline_body', 'fterm_hl_termline_body')
 " key map
 call s:init_var('disable_map', 0)
 call s:init_var('map_select', 'm*')
+call s:init_var('map_quit', 'q')
 
 " 0 for tmap, 1 for tmap and map
 function! s:init_map(map, lhs, rhs, mode=1) abort
@@ -64,21 +66,22 @@ command! -bar -nargs=0 FtermMoveStart Fterm move --to 1
 command! -bar -nargs=0 FtermMoveEnd Fterm move --end
 command! -bar -nargs=1 FtermMoveLeft Fterm move --left <args>
 command! -bar -nargs=1 FtermMoveRight Fterm move --right <args>
+command! -bar -nargs=0 FtermQuit Fterm quit
 
 if g:fterm_disable_map < 1
   call s:init_map('new',       '<leader>c',  'FtermNew')
   call s:init_map('toggle',    '<leader>s',  'FtermToggle')
   call s:init_map('kill',      '<leader>k',  'FtermKill')
   call s:init_map('killall',   '<leader>a',  'FtermKillAll')
-  call s:init_map('settitle',  '<leader>,',  'call fterm#set_title()', 1)
-  call s:init_map('moveright', '<leader>tl', 'FtermMoveRight 1',       1)
-  call s:init_map('moveleft',  '<leader>th', 'FtermMoveLeft 1',        1)
-  call s:init_map('movestart', '<leader>ta', 'FtermMoveStart 1',       1)
-  call s:init_map('moveend',   '<leader>te', 'FtermMoveEnd',           1)
+  call s:init_map('settitle',  '<leader>,',  'call fterm#set_title()', 0)
+  call s:init_map('moveright', '<leader>tl', 'FtermMoveRight 1',       0)
+  call s:init_map('moveleft',  '<leader>th', 'FtermMoveLeft 1',        0)
+  call s:init_map('movestart', '<leader>ta', 'FtermMoveStart 1',       0)
+  call s:init_map('moveend',   '<leader>te', 'FtermMoveEnd',           0)
   for i in range(1, 10)
     let Pattern = s:get_pattern()
     let num = i % 10
-    call s:init_map('select'.num, Pattern(num), 'FtermSelect '.num)
+    call s:init_map('select'.num, Pattern(num), 'FtermSelect '.num, 0)
   endfor
 endif
 

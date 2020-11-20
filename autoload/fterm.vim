@@ -40,7 +40,3 @@ endfunction
 function! fterm#edit(bufnr, path) abort
   exec g:ft_py printf("manager.edit_in_vim('%s')", a:path)
 endfunction
-
-function! Tapi_Test(bufnr, args)
-  echom a:args
-endfunction

@@ -55,6 +55,8 @@ class Manager(object):
         parser_move.add_argument('--right', dest='move_right', metavar='N', type=int, help='move current tab to right')
         parser_move.add_argument('--to', dest='move_to', metavar='N', type=int, help='move current tab to specified position')
         parser_move.add_argument('--end', default=False, dest="move_end", action='store_true', help='move current tab to end')
+        # quit command
+        parser_quit = subparsers.add_parser('quit')
         self.parser = parser
 
     def start(self, arglist):
@@ -82,6 +84,8 @@ class Manager(object):
                 self.termline.set_title(self.args.title)
             elif mode == 'move':
                 self.move()
+            elif mode == 'quit':
+                self.quit()
         except AttributeError:
             pass
 
@@ -132,6 +136,16 @@ class Manager(object):
         if self.show and not self.empty():
             self.get_curterm().create_popup()
             return_to_terminal()
+
+    def quit(self):
+        if not self.show or self.empty():
+            return
+        term = self.term_list.pop(self.cur_termnr)
+        term.close_popup()
+        term.kill_term()
+        if self.cur_termnr >= len(self.term_list): # no terminal on the right
+            self.cur_termnr -= 1
+        self.show = False
 
     def kill_all_term(self):
         if self.empty():

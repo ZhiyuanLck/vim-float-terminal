@@ -8,6 +8,7 @@
       - [Global Variables](#global-variables)
       - [Command](#command)
       - [Default Mappings](#default-mappings)
+      - [Quick quit](#quick-quit)
       - [Default Highlights](#default-highlights)
       - [Edit file from terminal](#edit-file-from-terminal)
       - [Support for <a href="https://github.com/skywind3000/asyncrun.vim">asyncrun.vim</a>](#support-for-asyncrunvim)
@@ -177,6 +178,20 @@ tnoremap <silent><leader>te <c-\><c-n>:<c-u>FtermMoveEnd<cr>
 for i in range(1, 9)
   exec printf('tnoremap <silent><m-%d> <c-\><c-n>:<c-u>FtermSelect %d<cr>', i, i)
 endfor
+```
+
+## Quick quit
+
+You can quit the terminal quickly by command `FtermQuit` which is map to the key specified by `g:fterm_map_quit` (by default `q`). The keymap is disabled when certain pattern is matched in command to start the terminal. This work is done by vim built-in function `match()`. The default pattern list is
+
+```vim
+let g:fterm_noquit=[
+      \ '\v(\S|/)*bash$',
+      \ '\v(\S|/)*zsh$',
+      \ '\v(\S|/)*ksh$',
+      \ '\v(\S|/)*csh$',
+      \ '\v(\S|/)*tcsh$'
+      \ ]
 ```
 
 ## Default Highlights

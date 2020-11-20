@@ -1,4 +1,5 @@
 import vim
+import re
 
 from .utils import *
 from .ftermline import FtermLine
@@ -83,12 +84,7 @@ class Fterm(object):
             self.line = self.anchor_line
 
     def init_term(self):
-        shell = ftget("shell", "&shell")
-        cmd = self.args["cmd"]
-        if cmd is None:
-            cmd = shell
-        else:
-            cmd = ' '.join(self.args["cmd"])
+        cmd = self.get_cmd()
         opts = {"hidden": 1, "norestore": 1, "term_finish": "open"}
         opts["term_cols"] = self.width
         opts["term_rows"] = self.height
@@ -97,6 +93,27 @@ class Fterm(object):
         self.bufnr = vimeval(r"""term_start("{}", {})""".format(cmd, opts), 1)
         if ftget("autoquit", 0) == '1':
             vimcmd("call term_setkill({}, 'kill')".format(self.bufnr))
+
+    def get_cmd(self):
+        shell = ftget("shell", "&shell")
+        cmd = self.args["cmd"]
+        if cmd is None:
+            cmd = shell
+        else:
+            cmd = ' '.join(self.args["cmd"])
+        return cmd
+
+    def map_quit(self):
+        cmd = self.get_cmd()
+        noquit = ftget("noquit", [r'\v(\S|/)*bash$', r'\v(\S|/)*zsh$', r'\v(\S|/)*ksh$', r'\v(\S|/)*csh$', r'\v(\S|/)*tcsh$'])
+        map = True
+        for pattern in noquit:
+            if vimeval("match('{}', '{}')".format(cmd, pattern)) != '-1':
+                map = False
+                break
+        if map:
+            quit = ftget("map_quit", "'q'")
+            vimcmd(r"tnoremap <silent><buffer>{} <c-\><c-n>:FtermQuit<cr>".format(quit))
 
     def create_popup(self):
         opts = {
@@ -116,6 +133,7 @@ class Fterm(object):
         opts["border"], opts["borderchars"] = get_terminal_border()
         opts["highlight"] = ftget("hl_terminal_body", "'fterm_hl_terminal_body'")
         self.winid = vimeval("popup_create({}, {})".format(self.bufnr, str(opts)), 1)
+        self.map_quit()
         self.termline.build_line()
 
     def close_popup(self):
