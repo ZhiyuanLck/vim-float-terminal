@@ -122,6 +122,7 @@ optional arguments:
 | `g:fterm_termline_pos`        | `outertop`                                 | pos of termline, value must be one of `outertop, innertop, outerbottom, innerbottom`
 | `g:fterm_title`               | `fterm`                                    | default title
 | `g:fterm_highlights`          |                                            | highlight setting
+| `g:fterm_disable_map`         | `0`                                        | disable default map
 
 ## Command
 
@@ -141,6 +142,23 @@ command! -bar -nargs=1 FtermMoveRight Fterm move --right <args>
 ```
 
 ## Default Mappings
+
+If you set `g:fterm_disable_map=0`, default mappings are set, but you can change them by following variables.
+
+| Variables               | Default Value | Description
+| ---------               | ------------  | -----------
+| `g:fterm_map_new`       | `<leader>c`   | create new terminal
+| `g:fterm_map_toggle`    | `<leader>t`   | toggle current terminal if not exist, create a new one
+| `g:fterm_map_kill`      | `<leader>k`   | kill current terminal and show next one
+| `g:fterm_map_killall`   | `<leader>a`   | kill all terminals
+| `g:fterm_map_settitle`  | `<leader>,`   | set the title of current terminal
+| `g:fterm_map_moveright` | `<leader>l`   | move current termtab to right 1
+| `g:fterm_map_moveleft`  | `<leader>h`   | move current termtab to left 1
+| `g:fterm_map_movestart` | `<leader>a`   | move current termtab to the start of the termline
+| `g:fterm_map_moveend`   | `<leader>e`   | move current termtab to the end of the termline
+| `g:fterm_map_select`    | `m*`          | prefix of mappings to select a termtab, `m*` is for meta key, `<m-1>, <m-2>...`, others are normal prefix
+
+If you set `g:fterm_disable_map=1`, then you need to define mappings by yourself. Here is the example code.
 
 ```vim
 noremap <silent><leader>c :<c-u>FtermNew<cr>

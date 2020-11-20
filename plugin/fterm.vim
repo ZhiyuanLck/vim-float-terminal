@@ -25,6 +25,32 @@ call s:init_var('hl_terminal_border', ['fterm_hl_terminal_border'])
 call s:init_var('hl_termline_border', ['fterm_hl_termline_border'])
 call s:init_var('hl_terminal_body', 'fterm_hl_terminal_body')
 call s:init_var('hl_termline_body', 'fterm_hl_termline_body')
+" key map
+call s:init_var('disable_map', 0)
+call s:init_var('map_select', 'm*')
+
+" 0 for tmap, 1 for tmap and map
+function! s:init_map(map, lhs, rhs, mode=1) abort
+  call s:init_var('map_'.a:map, a:lhs)
+  exec "let l:lhs = g:fterm_map_".a:map
+  if a:mode >= 0
+    exec printf('tnoremap <silent>%s <c-\><c-n>:<c-u>%s<cr>', l:lhs, a:rhs)
+  endif
+  if a:mode >= 1
+    exec printf("noremap <silent>%s :<c-u>%s<cr>", l:lhs, a:rhs)
+  endif
+endfunction
+
+function! s:get_pattern() abort
+  let mode = g:fterm_map_select
+  if mode == 'm*'
+    return {k -> '<m-'.k.'>'}
+  elseif mode == 'c*'
+    return {k -> '<c-'.k.'>'}
+  else
+    return {k -> mode.k}
+  endif
+endfunction
 
 command! -bar -complete=customlist,fterm#complete -nargs=+ Fterm call fterm#cmd(<f-args>)
 command! -bar -nargs=* FtermNew Fterm new <args>
@@ -39,21 +65,21 @@ command! -bar -nargs=0 FtermMoveEnd Fterm move --end
 command! -bar -nargs=1 FtermMoveLeft Fterm move --left <args>
 command! -bar -nargs=1 FtermMoveRight Fterm move --right <args>
 
-noremap <silent><leader>c :<c-u>FtermNew<cr>
-tnoremap <silent><leader>c <c-\><c-n>:<c-u>FtermNew<cr>
-noremap <silent><leader>s :<c-u>FtermToggle<cr>
-tnoremap <silent><leader>s <c-\><c-n>:<c-u>FtermToggle<cr>
-noremap <silent><leader>k :<c-u>FtermKill<cr>
-tnoremap <silent><leader>k <c-\><c-n>:<c-u>FtermKill<cr>
-noremap <silent><leader>a :<c-u>FtermKillAll<cr>
-tnoremap <silent><leader>a <c-\><c-n>:<c-u>FtermKillAll<cr>
-tnoremap <silent><leader>, <c-\><c-n>:<c-u>call fterm#set_title()<cr>
-tnoremap <silent><leader>tl <c-\><c-n>:<c-u>FtermMoveRight 1<cr>
-tnoremap <silent><leader>th <c-\><c-n>:<c-u>FtermMoveLeft 1<cr>
-tnoremap <silent><leader>ta <c-\><c-n>:<c-u>FtermMoveStart<cr>
-tnoremap <silent><leader>te <c-\><c-n>:<c-u>FtermMoveEnd<cr>
-for i in range(1, 9)
-  exec printf('tnoremap <silent><m-%d> <c-\><c-n>:<c-u>FtermSelect %d<cr>', i, i)
-endfor
+if g:fterm_disable_map < 1
+  call s:init_map('new',       '<leader>c',  'FtermNew')
+  call s:init_map('toggle',    '<leader>s',  'FtermToggle')
+  call s:init_map('kill',      '<leader>k',  'FtermKill')
+  call s:init_map('killall',   '<leader>a',  'FtermKillAll')
+  call s:init_map('settitle',  '<leader>,',  'call fterm#set_title()', 1)
+  call s:init_map('moveright', '<leader>tl', 'FtermMoveRight 1',       1)
+  call s:init_map('moveleft',  '<leader>th', 'FtermMoveLeft 1',        1)
+  call s:init_map('movestart', '<leader>ta', 'FtermMoveStart 1',       1)
+  call s:init_map('moveend',   '<leader>te', 'FtermMoveEnd',           1)
+  for i in range(1, 10)
+    let Pattern = s:get_pattern()
+    let num = i % 10
+    call s:init_map('select'.num, Pattern(num), 'FtermSelect '.num)
+  endfor
+endif
 
 " 异步关闭窗口

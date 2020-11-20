@@ -127,7 +127,7 @@ class Manager(object):
         term.kill_term()
         if self.empty():
             self.show = False
-        if self.cur_termnr >= len(self.term_list): # empty
+        if self.cur_termnr >= len(self.term_list): # no terminal on the right
             self.cur_termnr -= 1
         if self.show and not self.empty():
             self.get_curterm().create_popup()
