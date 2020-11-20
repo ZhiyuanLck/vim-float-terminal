@@ -36,7 +36,7 @@ Plug 'ZhiyuanLck/vim-float-terminal'
 ## Usage
 
 ```
-usage: Fterm [-h] {new,toggle,kill,select,settitle,move} ...
+usage: Fterm [-h] {new,toggle,kill,select,settitle,move,quit} ...
 
 positional arguments:
   {new,toggle,kill,select,settitle,move}
@@ -104,6 +104,13 @@ optional arguments:
   --right N   move current tab to right
   --to N      move current tab to specified position
   --end       move current tab to end
+
+------------------------------------------------------------------------------
+
+usage: Fterm quit [-h]
+
+optional arguments:
+  -h, --help  show this help message and exit
 ```
 
 ## Global Variables

@@ -118,3 +118,6 @@ ENV/
 # toc
 *.md.orig*
 *.md.toc*
+
+# tags
+tags

@@ -1,0 +1,394 @@
+*fterm.txt*                                   simple vim popup terminal plugin
+==============================================================================
+
+Author : ZhiyuanLck <https://github.com/ZhiyuanLck>
+License: MIT license
+NOTE: This doc may be outdated, please refer to the README file instead,
+    https://github.com/ZhiyuanLck/vim-float-terminal/blob/master/README.md
+
+==============================================================================
+
+CONTENTS                                                      *fterm-contents*
+Introduction                                              |fterm-introduction|
+Options                                                        |fterm-options|
+Commands                                                      |fterm-commands|
+Mappings                                                      |fterm-mappings|
+Highlights                                                  |fterm-highlights|
+Quick quit                                                  |fterm-quick-quit|
+Edit file from terminal                                      |fterm-edit-file|
+Support for |asyncrun|                                |fterm-support-asyncrun|
+Known issues                                                    |fterm-issues|
+Reference                                                    |fterm-reference|
+
+==============================================================================
+Introduction                                              *fterm-introduction*
+
+Use vim built-in terminal in popup with a termline.
+
+- Create/toggle/kill terminal in popup quickly.
+- Termline support just like tabline.
+- Support for |asyncrun.vim|
+
+==============================================================================
+Options                                                        *fterm-options*
+
+g:fterm_shell                                                  *g:fterm_shell*
+  Specify the shell to be used in terminal.
+
+g:fterm_width                                                  *g:fterm_width*
+  Specify the width of the terminal.
+  If the value is between 0 and 1, the width is relative to 'columns'.
+  If the value is greater than 1, number of columns of the popup is set to the
+  value.
+  If the value is invalid, the width is set to the default value.
+  Default value is 0.75.
+
+g:fterm_height                                                *g:fterm_height*
+  Specify the height of the terminal.
+  If the value is between 0 and 1, the height is relative to 'lines'.
+  If the value is greater than 1, number of lines of the popup is set to the
+  value.
+  If the value is invalid, the height is set to the default value.
+  Default value is 0.75.
+
+g:fterm_autoquit                                            *g:fterm_autoquit*
+  If set to 1, you will quit vim with no warning about the running job.
+  Use this option with caution, you may lost your job!
+  Defaut 0.
+
+g:fterm_open_cmd                                            *g:fterm_open_cmd*
+  Command used when openning a file from the terminal in popup.
+  Defaut 'tabedit'.
+
+g:fterm_exclude_cmdline                              *g:fterm_exclude_cmdline*
+  Exclude the cmdline when calculating the height of terminal.
+  Default 1.
+
+g:fterm_exclude_statusline                        *g:fterm_exclude_statusline*
+  Exclude the statusline when calculating the height of terminal.
+  Default 1.
+
+g:fterm_exclude_tabline                              *g:fterm_exclude_tabline*
+  Exclude the tabline when calculating the height of terminal.
+  Default 1.
+
+g:fterm_exclude_signcolumns                      *g:fterm_exclude_signcolumns*
+  Exclude the signcolumns when calculating the width of terminal.
+  Default 0.
+
+g:fterm_borderchars                                      *g:fterm_borderchars*
+  Characters of the whole window border.
+  Default ['─', '│', '─', '│', '┌', '┐', '┘', '└'].
+
+g:fterm_termline_pos                                    *g:fterm_termline_pos*
+  Pos of the termline.
+  Value can be one of ['outertop', 'innertop', 'outerbottom', 'innerbottom'].
+  Default 'outertop'.
+
+g:fterm_title                                                  *g:fterm_title*
+  Default title name that is shown in termline.
+  Default 'fterm'.
+
+==============================================================================
+Commands                                                      *fterm-commands*
+
+:Fterm [-h] {new,toggle,kill,select,settitle,move,quit} ...            *Fterm*
+  Main command used to control the terminal.
+
+                                                                   *Fterm-new*
+:Fterm new [-h] [--cmd CMD [CMD ...]] [--width width] [--height height]
+  Create a new terminal.
+  If '--cmd' is set, run commands otherwise run command specified by
+  |g:fterm_shell|. Commands are processed by <f-args> so you don't need to
+  quote them.
+  If '--width' and/or '--height' is set, global value of  width and/or height
+  of the popup will be covered. Width and height are saved for every popup
+  terminal respectively.
+
+  Run terminal with specified shell:
+>
+  :Fterm new
+<
+  Run terminal with specified command:
+>
+  :Fterm new --cmd man ls
+<
+  Run terminal with specified height and width:
+>
+  :Fterm new --width 0.8 --height 20
+<
+:FtermNew                                                          *:FtermNew*
+  Create a new terminal. Equal to
+>
+  :Fterm new
+<
+
+                                                                *Fterm-toggle*
+:Fterm toggle [-h] [--cmd CMD [CMD ...]] [--width width] [--height height]
+  If there exists no terminal created by |:FtermNew| or |:FtermToggle|, this
+  command is equal to |:FtermNew|.
+  If fterm is visible, hide current terminal, else show the current terminal.
+
+:FtermToggle                                                    *:FtermToggle*
+  Toggle an existed terminal or create a new terminal. Equal to
+>
+  :Fterm toggle
+<
+
+:Fterm kill [-h] [--all]                                          *Fterm-kill*
+  Kill current terminal and show next terminal if possible.
+  If '--all' is set, kill all terminals.
+
+:FtermKill                                                        *:FtermKill*
+  Kill current terminal. Equal to
+>
+  :Fterm kill
+<
+
+:FtermKillAll                                                  *:FtermKillAll*
+  Kill all terminals. Equal to
+>
+  :Fterm kill --all
+<
+
+:Fterm select [-h] terminal_number                              *Fterm-select*
+  Show the terminal with specified number.
+
+:FtermSelect [-h] terminal_number                               *:FtermSelect*
+  Show the terminal with specified number. Equal to
+>
+  :Fterm select
+<
+
+:Fterm settitle [-h] title                                    *Fterm-settitle*
+  Set the title of current terminal.
+
+:FtermSetTitle [-h] title                                      *FtermSetTitle*
+  Set the title of current terminal. Equal to
+>
+  :Fterm settitle
+<
+
+:Fterm move [-h] [--left N] [--right N] [--to N] [--end]          *Fterm-move*
+  Move the termtab on termline.
+  If '--left' is set, move current termtab left N tabs.
+  If '--right' is set, move current termtab right N tabs.
+  If '--to' is set, move current termtab to pos N of the termline. If N is
+  invalid, set N to the remainder of the division of N by number of terminals.
+  If '--end' is set, move current termtab to end of the termline.
+  Priority of above arguments is
+>
+  --end > --to > --left > --right
+<
+
+:FtermMoveTo N                                                  *:FtermMoveTo*
+  Move current termtab to pos N of the termline. See |Fterm-move|. Equal to
+>
+  :Fterm move --to N
+<
+
+:FtermMoveStart                                              *:FtermMoveStart*
+  Move current termtab to start of the termline. Equal to
+>
+  :Fterm move --to 1
+<
+
+:FtermMoveEnd                                                  *:FtermMoveEnd*
+  Move current termtab to end of the termline. Equal to
+>
+  :Fterm move --end
+<
+
+:FtermMoveLeft                                                *:FtermMoveLeft*
+  Exchange the position with the left terminal. Equal to
+>
+  :Fterm move --left 1
+<
+
+:FtermMoveRight                                              *:FtermMoveRight*
+  Exchange the position with the right terminal. Equal to
+>
+  :Fterm move --right 1
+<
+
+==============================================================================
+Mappings                                                      *fterm-mappings*
+
+Fterm sets some default mappings for you. You can change single mapping by
+change the value of corresponding variable. If you don't like this mappings
+at all and want to define your own from scratch. Set |g:fterm_disable_map| to
+1 to disable all mappings.
+
+g:fterm_disable_map                                      *g:fterm_disable_map*
+  If set to 1, disable all mappings. Then you need to define mappings by
+  yourself.
+  Default 0.
+
+  Example mapping definition:
+>
+  noremap <silent><leader>c :<c-u>FtermNew<cr>
+  tnoremap <silent><leader>c <c-\><c-n>:<c-u>FtermNew<cr>
+  noremap <silent><leader>s :<c-u>FtermToggle<cr>
+  tnoremap <silent><leader>s <c-\><c-n>:<c-u>FtermToggle<cr>
+  noremap <silent><leader>k :<c-u>FtermKill<cr>
+  tnoremap <silent><leader>k <c-\><c-n>:<c-u>FtermKill<cr>
+  noremap <silent><leader>a :<c-u>FtermKillAll<cr>
+  tnoremap <silent><leader>a <c-\><c-n>:<c-u>FtermKillAll<cr>
+  tnoremap <silent><leader>, <c-\><c-n>:<c-u>call fterm#set_title()<cr>
+  tnoremap <silent><leader>tl <c-\><c-n>:<c-u>FtermMoveRight 1<cr>
+  tnoremap <silent><leader>th <c-\><c-n>:<c-u>FtermMoveLeft 1<cr>
+  tnoremap <silent><leader>ta <c-\><c-n>:<c-u>FtermMoveStart<cr>
+  tnoremap <silent><leader>te <c-\><c-n>:<c-u>FtermMoveEnd<cr>
+  for i in range(1, 9)
+    exec printf('tnoremap <silent><m-%d> <c-\><c-n>:<c-u>FtermSelect %d<cr>', i, i)
+  endfor
+<
+
+g:fterm_map_new                                              *g:fterm_map_new*
+  Mapping to create new terminal. See |Fterm-new| and |:FtermNew|.
+  Default '<leader>c'.
+
+g:fterm_map_toggle                                        *g:fterm_map_toggle*
+  Mapping to toggle current terminal. See |Fterm-toggle| and |:FtermToggle|.
+  Default '<leader>s'.
+
+g:fterm_map_kill                                            *g:fterm_map_kill*
+  Mapping to kill current terminal and show next one. See |Fterm-kill| and
+  |:FtermKill|
+  Default '<leader>k'.
+
+g:fterm_map_killall                                      *g:fterm_map_killall*
+  Mapping to kill all terminals. See |Fterm-kill| and |:FtermKillAll|.
+  Default '<leader>a'.
+
+g:fterm_map_settitle                                    *g:fterm_map_settitle*
+  Mapping to set the title of current terminal. See |Fterm-settitle| and
+  |:FtermSetTitle|.
+  Default '<leader>,'.
+
+g:fterm_map_moveright                                  *g:fterm_map_moveright*
+  Mapping to exchange the position of current terminal with the right one. See
+  |Fterm-move| and |FtermMoveRight|.
+  Default '<leader>l'.
+
+g:fterm_map_moveleft                                    *g:fterm_map_moveleft*
+  Mapping to exchange the position of current terminal with the left one. See
+  |Fterm-move| and |FtermMoveLeft|.
+  Default '<leader>h'.
+
+g:fterm_map_movestart                                  *g:fterm_map_movestart*
+  Mapping to move current terminal to the start of the termline. See
+  |Fterm-move| and |FtermMoveStart|.
+  Default '<leader>a'.
+
+g:fterm_map_moveend                                      *g:fterm_map_moveend*
+  Mapping to move current terminal to the end of the termline. See
+  |Fterm-move| and |FtermMoveEnd|.
+  Default '<leader>e'.
+
+g:fterm_map_select                                        *g:fterm_map_select*
+  Prefix of mappings to show terminal with specified number.
+  'm*' is for meta key and 'c*' is for control CTRL, others are normal prefix.
+
+==============================================================================
+Highlights                                                  *fterm-highlights*
+
+g:fterm_highlights                                        *g:fterm_highlights*
+  Highlights dict.
+  Default value:
+>
+  let g:fterm_highlights = {
+        \ "fterm_hl_border": {
+        \   "ctermfg": 10,
+        \   },
+        \ "fterm_hl_termline_info": {
+        \   "ctermfg": 255,
+        \   "ctermbg": 245,
+        \   },
+        \ "fterm_hl_termline_normal": {
+        \   "ctermfg": 252,
+        \   "ctermbg": 240,
+        \   },
+        \ "fterm_hl_termline_current": {
+        \   "ctermfg": 0,
+        \   "ctermbg": 84,
+        \   },
+        \ "fterm_hl_terminal_body": {
+        \   "ctermfg": "fg",
+        \   "ctermbg": "bg",
+        \   },
+        \ "fterm_hl_termline_body": {
+        \   "ctermfg": "fg",
+        \   "ctermbg": "bg",
+        \   },
+        \ }
+<
+
+==============================================================================
+Quit quit                                                   *fterm-quick-quit*
+
+You can quit the terminal quickly by command |:FtermQuit| which is mapped to
+the key specified by |g:fterm_map_quit|. The mapping is disabled when certain
+pattern is matched in command to start the terminal. This work is done by vim
+built-in function |match()|.
+
+:Fterm quit                                                       *Fterm-quit*
+  Quit current terminal and close popup.
+
+:FtermQuit                                                        *:FtermQuit*
+  Quit current terminal and close popup. Equal to
+>
+  :Fterm quit
+<
+
+g:fterm_map_quit                                            *g:fterm_map_quit*
+  Mapping to quit current terminal and close popup. See |Fterm-quit| and
+  |:FtermQuit|.
+  Default 'q'.
+
+g:fterm_noquit                                                *g:fterm_noquit*
+  Pattern list that define whether to map keys specified by |g:fterm_map_quit|
+  to |:FtermQuit|. If pattern in the list is matched, do nothing.
+  Default value:
+>
+  let g:fterm_noquit=[
+        \ '\v(\w|/)*bash$',
+        \ '\v(\w|/)*zsh$',
+        \ '\v(\w|/)*ksh$',
+        \ '\v(\w|/)*csh$',
+        \ '\v(\w|/)*tcsh$'
+        \ ]
+<
+
+==============================================================================
+Edit file from terminal                                      *fterm-edit-file*
+
+Inside terminal you can use command 'fterm' instead of 'vim' to open file in
+vim. You can customize the open command, see |g:fterm_open_cmd|.
+
+The shell script borrow the code from |floaterm|:
+https://github.com/voldikss/vim-floaterm/blob/master/bin/floaterm
+
+==============================================================================
+Support for |asyncrun|
+
+Add following lines to support running commands asynchronously in fterm:
+>
+  let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
+  let g:asyncrun_runner.fterm = function('fterm#async_runner')
+<
+
+==============================================================================
+Known issues
+
+1. Cursor position wrong in terminal popup with finished job.
+  Fixed in patch-8.2.1990.
+  https://github.com/vim/vim/commit/6a07644db30cb5f3d0c6dc5eb2c348b6289da553
+
+2. Patch-8.2.1990 cause new problem: window changes when using |bufload()|
+  while in a terminal popup. Fixed in patch-8.2.1997. This issue will cause
+  the plugin to not work properly.
+  https://github.com/vim/vim/commit/8adc8d9b73121b647476a33d91d31d25e1c2d987
+
+==============================================================================
+vim:tw=78:ts=2:ft=help:fen:
