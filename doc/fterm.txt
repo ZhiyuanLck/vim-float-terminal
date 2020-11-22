@@ -54,16 +54,16 @@ g:fterm_height                                                *g:fterm_height*
 g:fterm_autoquit                                            *g:fterm_autoquit*
   If set to 1, you will quit vim with no warning about the running job.
   Use this option with caution, you may lost your job!
-  Defaut 0.
+  Default 0.
 
 g:fterm_open_cmd                                            *g:fterm_open_cmd*
   Command used when openning a file from the terminal in popup.
-  Defaut 'tabedit'.
+  Default 'tabedit'.
 
 g:fterm_use_root                                            *g:fterm_use_root*
   If set to 1, fterm will try to search the root directory of the project and
   use it as current working directory of the terminal.
-  Defaut 1.
+  Default 1.
 
 g:fterm_root_marker                                      *g:fterm_root_marker*
   Markers that will mark current directory as root directory.
@@ -72,6 +72,12 @@ g:fterm_root_marker                                      *g:fterm_root_marker*
 g:fterm_root_search_level                          *g:fterm_root_search_level*
   Max level when trying to search the root directory.
   Default 5.
+
+g:fterm_expanduser                                        *g:fterm_expanduser*
+  If set to 1, fterm will try to expand every part of string specified by
+  '--cmd' option that contains '~'. For example, '~' will be expanded to
+  '/home/username'.
+  Default 1.
 
 g:fterm_exclude_cmdline                              *g:fterm_exclude_cmdline*
   Exclude the cmdline when calculating the height of terminal.

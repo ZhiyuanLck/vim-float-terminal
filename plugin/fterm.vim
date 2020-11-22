@@ -17,6 +17,7 @@ call s:init_var('noquit', ['\v(\w|/)*bash$', '\v(\w|/)*zsh$', '\v(\w|/)*ksh$', '
 call s:init_var('use_root', 1)
 call s:init_var('root_marker', ['.root', '.git', '.svn', '.hg', '.project'])
 call s:init_var('root_search_level', 5)
+call s:init_var('expanduser', 1)
 " termline
 call s:init_var('borderchars',
       \ ['─', '│', '─', '│', '┌', '┐', '┘', '└'])

@@ -35,6 +35,10 @@ ftget = partial(vimget, 'g:', 'fterm')
 def vim_win_setlocal(winid, cmd):
     vimcmd("call win_execute({}, 'setlocal {}')".format(winid, cmd))
 
+def expanduser(path):
+    p = Path(path).expanduser().resolve()
+    return str(p) if p.exists() else path
+
 def get_cwd():
     cwd = vimeval("fnamemodify(resolve(expand('%:p')), ':p:h')")
     use_root = ftget("use_root", 1) == '1'

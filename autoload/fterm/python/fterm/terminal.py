@@ -104,11 +104,14 @@ class Fterm(object):
 
     def get_cmd(self):
         shell = ftget("shell", "&shell")
-        cmd = self.args["cmd"]
-        if cmd is None:
+        cmd_parts = self.args["cmd"]
+        if cmd_parts is None:
             cmd = shell
         else:
-            cmd = ' '.join(self.args["cmd"])
+            if ftget("expanduser", 1) == '1':
+                cmd_parts = [expanduser(p) for p in cmd_parts]
+                print(cmd_parts, 123)
+            cmd = ' '.join(cmd_parts)
         return cmd
 
     def map_quit(self):
@@ -122,6 +125,7 @@ class Fterm(object):
         if map:
             quit = ftget("map_quit", "'q'")
             vimcmd(r"tnoremap <silent><buffer>{} <c-\><c-n>:FtermQuit<cr>".format(quit))
+            vimcmd(r"noremap <silent><buffer>{} <c-\><c-n>:FtermQuit<cr>".format(quit))
 
     def create_popup(self):
         opts = {
