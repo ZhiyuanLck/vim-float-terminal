@@ -141,7 +141,8 @@ Commands                                                      *fterm-commands*
   Create terminal with command with options:
   In this case, you must escape white space to ensure the parser to receive
   ['new', '--cmd', 'ls -la'] rather than ['new', '--cmd', 'ls', '-la']. The
-  latter will throw error of unrecognized argumnets.
+  latter will throw error of unrecognized argumnets. More details see
+  |<f-args>|.
 >
   :Fterm new --cmd ls\ -la
 <
