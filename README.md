@@ -125,7 +125,7 @@ optional arguments:
 | `g:fterm_open_cmd`            | `tabedit`                                      | command to edit file from terminal
 | `g:fterm_use_root`            | `1`                                            | try to use the root directory of the project as cwd
 | `g:fterm_root_marker`         | `['.root', '.git', '.svn', '.hg', '.project']` | markers that mark current directory as root directory
-| `g:fterm_root_search_level`   | `5`                                            | max search levels when searching root directory
+| `g:fterm_root_search_level`   | `5`                                            | max level when searching root directory
 | `g:fterm_exclude_cmdline`     | `1`                                            | exclude the cmdline when calculating the height of terminal
 | `g:fterm_exclude_statusline`  | `1`                                            | exclude the statusline when calculating the height of terminal
 | `g:fterm_exclude_tabline`     | `1`                                            | exclude the tabline when calculating the height of terminal
