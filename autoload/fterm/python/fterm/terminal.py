@@ -110,7 +110,6 @@ class Fterm(object):
         else:
             if ftget("expanduser", 1) == '1':
                 cmd_parts = [expanduser(p) for p in cmd_parts]
-                print(cmd_parts, 123)
             cmd = ' '.join(cmd_parts)
         return cmd
 
