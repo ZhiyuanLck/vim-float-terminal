@@ -21,9 +21,7 @@ class Fterm(object):
         if cwd is None:
             self.cwd = get_cwd()
         else:
-            cwd = Path.home() if cwd == '~' else cwd
-            self.cwd = str(Path(cwd).resolve())
-            print(self.cwd)
+            self.cwd = str(Path(cwd).expanduser().resolve())
 
     def set_exclude(self):
         self.exclude_cmdline = ftget("fterm_exclude_cmdline", 1) == '1'
