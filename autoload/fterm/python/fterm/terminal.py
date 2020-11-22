@@ -114,11 +114,11 @@ class Fterm(object):
         return cmd
 
     def map_quit(self):
-        cmd = self.get_cmd()
+        cmd = self.get_cmd().replace('"', r'\"')
         noquit = ftget("noquit", [r'\v(\w|/)*bash$', r'\v(\w|/)*zsh$', r'\v(\w|/)*ksh$', r'\v(\w|/)*csh$', r'\v(\w|/)*tcsh$'])
         map = True
         for pattern in noquit:
-            if vimeval("match('{}', '{}')".format(cmd, pattern)) != '-1':
+            if vimeval(r"""match("{}", "{}")""".format(cmd, pattern)) != '-1':
                 map = False
                 break
         if map:

@@ -19,6 +19,12 @@ function! fterm#py(cmd) abort
 endfunction
 
 function! fterm#cmd(...) abort
+  " let arglist = []
+  " for arg in a:000
+  " endfor
+  " call map(arglist, {_, val -> shellescape(val)})
+  " echom a:000
+  " echom arglist
   exec g:ft_py "manager.start(vimeval('a:000'))"
 endfunction
 

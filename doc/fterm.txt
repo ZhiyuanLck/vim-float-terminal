@@ -138,6 +138,13 @@ Commands                                                      *fterm-commands*
 >
   :Fterm new --cmd man ls
 <
+  Create terminal with command with options:
+  In this case, you must escape white space to ensure the parser to receive
+  ['new', '--cmd', 'ls -la'] rather than ['new', '--cmd', 'ls', '-la']. The
+  latter will throw error of unrecognized argumnets.
+>
+  :Fterm new --cmd ls\ -la
+<
   Create terminal with specified height and width:
 >
   :Fterm new --width 0.8 --height 20
