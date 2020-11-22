@@ -63,13 +63,13 @@ class Fterm(object):
         Get the coordinates of topleft anchor.
         Note that calculation of anchor involves borders while setting the size the popup not.
         """
-        delta_w = self.max_w - self.width - 2 # 2 for border
+        delta_w = self.max_w - self.width
         if delta_w & 1:
             self.anchor_col = (delta_w + 1) // 2 + 1
             self.width -= 1
         else:
             self.anchor_col = delta_w // 2 + 1
-        delta_h = self.max_h - self.height - 3 # 3 for border and termline
+        delta_h = self.max_h - self.height
         if delta_h & 1:
             self.anchor_line = (delta_h + 1) // 2 + 1
             self.height -= 1
