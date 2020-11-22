@@ -31,12 +31,14 @@ class Manager(object):
         # new command
         parser_new = subparsers.add_parser('new')
         parser_new.register('action', 'extend', ExtendAction)
+        parser_new.add_argument('--cwd', help='cwd of terminal')
         parser_new.add_argument('--cmd', nargs="+", type=str, action="extend", help='run command in new terminal')
         parser_new.add_argument('--width', metavar='width', type=float, default=default_width, help='width of the popup window')
         parser_new.add_argument('--height', metavar='height', type=float, default=default_height, help='height of the popup window')
         # toggle command
         parser_toggle = subparsers.add_parser('toggle')
         parser_toggle.register('action', 'extend', ExtendAction)
+        parser_toggle.add_argument('--cwd', help='cwd of terminal')
         parser_toggle.add_argument('--cmd', nargs="+", type=str, action="extend", help='run command in new terminal (only in creation mode)')
         parser_toggle.add_argument('--width', metavar='width', type=float, default=default_width, help='width of the popup window (only in creation mode)')
         parser_toggle.add_argument('--height', metavar='height', type=float, default=default_height, help='height of the popup window (only in creation mode)')

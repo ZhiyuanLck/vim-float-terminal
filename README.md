@@ -47,21 +47,22 @@ optional arguments:
 
 ------------------------------------------------------------------------------
 
-usage: Fterm new [-h] [--cmd CMD [CMD ...]] [--width width] [--height height]
+usage: Fterm new [-h] [--cwd CWD] [--cmd CMD [CMD ...]] [--width width] [--height height]
 
 optional arguments:
   -h, --help           show this help message and exit
+  --cwd CWD            cwd of terminal
   --cmd CMD [CMD ...]  run command in new terminal
   --width width        width of the popup window
   --height height      height of the popup window
 
 ------------------------------------------------------------------------------
 
-usage: Fterm toggle [-h] [--cmd CMD [CMD ...]] [--width width]
-                    [--height height]
+usage: Fterm toggle [-h] [--cwd CWD] [--cmd CMD [CMD ...]] [--width width] [--height height]
 
 optional arguments:
   -h, --help           show this help message and exit
+  --cwd CWD            cwd of terminal
   --cmd CMD [CMD ...]  run command in new terminal (only in creation mode)
   --width width        width of the popup window (only in creation mode)
   --height height      height of the popup window (only in creation mode)
@@ -115,22 +116,25 @@ optional arguments:
 
 ## Global Variables
 
-| Variables                     | Default Value                              | Description
-| ---------                     | ------------                               | -----------
-| `g:fterm_shell`               | `&shell`                                   | shell to be used when using terminal
-| `g:fterm_width`               | `0.75`                                     | width of the terminal
-| `g:fterm_height`              | `0.75`                                     | height of the terminal
-| `g:fterm_autoquit`            | `0`                                        | kill the terminal automatically when leaving vim
-| `g:fterm_open_cmd`            | `tabedit`                                  | command to edit file from terminal
-| `g:fterm_exclude_cmdline`     | `1`                                        | exclude the cmdline when calculating the height of terminal
-| `g:fterm_exclude_statusline`  | `1`                                        | exclude the statusline when calculating the height of terminal
-| `g:fterm_exclude_tabline`     | `1`                                        | exclude the tabline when calculating the height of terminal
-| `g:fterm_exclude_signcolumns` | `0`                                        | exclude the signcolumn when calculating the width of terminal
-| `g:fterm_borderchars`         | `['─', '│', '─', '│', '┌', '┐', '┘', '└']` | characters of the window border
-| `g:fterm_termline_pos`        | `outertop`                                 | pos of termline, value must be one of `outertop, innertop, outerbottom, innerbottom`
-| `g:fterm_title`               | `fterm`                                    | default title
-| `g:fterm_highlights`          |                                            | highlight setting
-| `g:fterm_disable_map`         | `0`                                        | disable default map
+| Variables                     | Default Value                                  | Description
+| ---------                     | ------------                                   | -----------
+| `g:fterm_shell`               | `&shell`                                       | shell to be used when using terminal
+| `g:fterm_width`               | `0.75`                                         | width of the terminal
+| `g:fterm_height`              | `0.75`                                         | height of the terminal
+| `g:fterm_autoquit`            | `0`                                            | kill the terminal automatically when leaving vim
+| `g:fterm_open_cmd`            | `tabedit`                                      | command to edit file from terminal
+| `g:fterm_use_root`            | `1`                                            | try to use the root directory of the project as cwd
+| `g:fterm_root_marker`         | `['.root', '.git', '.svn', '.hg', '.project']` | markers that mark current directory as root directory
+| `g:fterm_root_search_level`   | `5`                                            | max search levels when searching root directory
+| `g:fterm_exclude_cmdline`     | `1`                                            | exclude the cmdline when calculating the height of terminal
+| `g:fterm_exclude_statusline`  | `1`                                            | exclude the statusline when calculating the height of terminal
+| `g:fterm_exclude_tabline`     | `1`                                            | exclude the tabline when calculating the height of terminal
+| `g:fterm_exclude_signcolumns` | `0`                                            | exclude the signcolumn when calculating the width of terminal
+| `g:fterm_borderchars`         | `['─', '│', '─', '│', '┌', '┐', '┘', '└']`     | characters of the window border
+| `g:fterm_termline_pos`        | `outertop`                                     | pos of termline, value must be one of `outertop, innertop, outerbottom, innerbottom`
+| `g:fterm_title`               | `fterm`                                        | default title
+| `g:fterm_highlights`          |                                                | highlight setting
+| `g:fterm_disable_map`         | `0`                                            | disable default map
 
 ## Command
 

@@ -1,6 +1,7 @@
 import vim
 import re
 
+from pathlib import Path
 from .utils import *
 from .ftermline import FtermLine
 
@@ -9,11 +10,20 @@ class Fterm(object):
         self.termline = termline
         self.args = vars(args)
         self.lastbuf = vimeval("bufnr('%')", 1)
-        self.cwd = get_cwd()
+        self.set_cwd()
         self.title = ftget("title", "'fterm'")
         self.set_exclude()
         self.set_geometry()
         self.init_term()
+
+    def set_cwd(self):
+        cwd = self.args["cwd"]
+        if cwd is None:
+            self.cwd = get_cwd()
+        else:
+            cwd = Path.home() if cwd == '~' else cwd
+            self.cwd = str(Path(cwd).resolve())
+            print(self.cwd)
 
     def set_exclude(self):
         self.exclude_cmdline = ftget("fterm_exclude_cmdline", 1) == '1'

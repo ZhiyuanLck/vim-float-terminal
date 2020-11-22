@@ -60,6 +60,19 @@ g:fterm_open_cmd                                            *g:fterm_open_cmd*
   Command used when openning a file from the terminal in popup.
   Defaut 'tabedit'.
 
+g:fterm_use_root                                            *g:fterm_use_root*
+  If set to 1, fterm will try to search the root directory of the project and
+  use it as current working directory of the terminal.
+  Defaut 1.
+
+g:fterm_root_marker                                      *g:fterm_root_marker*
+  Markers that will mark current directory as root directory.
+  Default ['.root', '.git', '.svn', '.hg', '.project'].
+
+g:fterm_root_search_level                          *g:fterm_root_search_level*
+  Max level when trying to search the root directory.
+  Default 5.
+
 g:fterm_exclude_cmdline                              *g:fterm_exclude_cmdline*
   Exclude the cmdline when calculating the height of terminal.
   Default 1.
@@ -96,8 +109,10 @@ Commands                                                      *fterm-commands*
   Main command used to control the terminal.
 
                                                                    *Fterm-new*
-:Fterm new [-h] [--cmd CMD [CMD ...]] [--width width] [--height height]
+:Fterm new [-h] [--cwd CWD] [--cmd CMD [CMD ...]]
+           [--width width] [--height height]
   Create a new terminal.
+  If '--cwd' is set, cwd of terminal is set to the specified path.
   If '--cmd' is set, run commands otherwise run command specified by
   |g:fterm_shell|. Commands are processed by <f-args> so you don't need to
   quote them.
@@ -105,15 +120,19 @@ Commands                                                      *fterm-commands*
   of the popup will be covered. Width and height are saved for every popup
   terminal respectively.
 
-  Run terminal with specified shell:
+  Create terminal with default shell:
 >
   :Fterm new
 <
-  Run terminal with specified command:
+  Create terminal under home directory:
+>
+  :Fterm new --cwd ~
+<
+  Create terminal with specified command:
 >
   :Fterm new --cmd man ls
 <
-  Run terminal with specified height and width:
+  Create terminal with specified height and width:
 >
   :Fterm new --width 0.8 --height 20
 <
@@ -124,7 +143,8 @@ Commands                                                      *fterm-commands*
 <
 
                                                                 *Fterm-toggle*
-:Fterm toggle [-h] [--cmd CMD [CMD ...]] [--width width] [--height height]
+:Fterm toggle [-h] [--cwd CWD] [--cmd CMD [CMD ...]]
+              [--width width] [--height height]
   If there exists no terminal created by |:FtermNew| or |:FtermToggle|, this
   command is equal to |:FtermNew|.
   If fterm is visible, hide current terminal, else show the current terminal.
