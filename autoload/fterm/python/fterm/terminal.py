@@ -56,23 +56,23 @@ class Fterm(object):
         n = int(n) if n > 1 else int(max_n * n)
         n = max(n, 10) # at least 10 cols or lines
         n = min(n, max_n) # at most max_n
-        return n - 2 if width else n - 3 # exclude border and temrline
+        return n - 4 if width else n - 3 # exclude border, padding and temrline
 
     def get_anchor(self):
         """
         Get the coordinates of topleft anchor.
         Note that calculation of anchor involves borders while setting the size the popup not.
         """
-        delta_w = self.max_w - self.width
+        delta_w = self.max_w - self.width - 4 # border and padding
         if delta_w & 1:
-            self.anchor_col = (delta_w + 1) // 2 + 1
-            self.width -= 1
+            self.anchor_col = (delta_w - 1) // 2 + 1
+            self.width += 1
         else:
             self.anchor_col = delta_w // 2 + 1
-        delta_h = self.max_h - self.height
+        delta_h = self.max_h - self.height - 3 # border and termline
         if delta_h & 1:
-            self.anchor_line = (delta_h + 1) // 2 + 1
-            self.height -= 1
+            self.anchor_line = (delta_h - 1) // 2 + 1
+            self.height += 1
         else:
             self.anchor_line = delta_h // 2 + 1
         if self.exclude_tabline:
