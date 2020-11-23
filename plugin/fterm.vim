@@ -35,6 +35,8 @@ call s:init_var('hl_termline_body', 'fterm_hl_termline_body')
 call s:init_var('disable_map', 0)
 call s:init_var('map_select', 'm*')
 call s:init_var('map_quit', 'q')
+" cmd
+call s:init_var('cmd_lazygit', 1)
 
 " 0 for tmap, 1 for tmap and map
 function! s:init_map(map, lhs, rhs, mode=1) abort
@@ -72,6 +74,11 @@ command! -bar -nargs=0 FtermMoveEnd Fterm move --end
 command! -bar -nargs=1 FtermMoveLeft Fterm move --left <args>
 command! -bar -nargs=1 FtermMoveRight Fterm move --right <args>
 command! -bar -nargs=0 FtermQuit Fterm quit
+
+if get(g:, 'fterm_cmd_lazygit', 1) && executable('lazygit')
+  command! -bar -nargs=0 Lazygit FtermNew
+        \ --cmd lazygit --title git --width 1 --height 1
+endif
 
 if g:fterm_disable_map < 1
   call s:init_map('new',       '<leader>c',  'FtermNew')

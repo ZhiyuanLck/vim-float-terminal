@@ -3,8 +3,6 @@
 
 Author : ZhiyuanLck <https://github.com/ZhiyuanLck>
 License: MIT license
-NOTE: This doc may be outdated, please refer to the README file instead,
-    https://github.com/ZhiyuanLck/vim-float-terminal/blob/master/README.md
 
 ==============================================================================
 
@@ -253,6 +251,17 @@ Commands                                                      *fterm-commands*
 >
   :Fterm move --right 1
 <
+
+:Lazygit                                                            *:Lazygit*
+  Run lazygit if it exists and |g:fterm_cmd_lazygit| is 1.
+>
+  command! -bar -nargs=0 Lazygit FtermNew
+        \ --cmd lazygit --title git --width 1 --height 1
+<
+
+g:fterm_cmd_lazygit                                      *g:fterm_cmd_lazygit*
+  If set to 1, define |:Lazygit| command.
+  Default 0.
 
 ==============================================================================
 Mappings                                                      *fterm-mappings*
