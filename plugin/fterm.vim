@@ -88,7 +88,7 @@ if g:fterm_disable_map < 1
   call s:init_map('settitle',  '<leader>,',  'call fterm#set_title()', 0)
   call s:init_map('moveright', '<leader>tl', 'FtermMoveRight 1',       0)
   call s:init_map('moveleft',  '<leader>th', 'FtermMoveLeft 1',        0)
-  call s:init_map('movestart', '<leader>ta', 'FtermMoveStart 1',       0)
+  call s:init_map('movestart', '<leader>ta', 'FtermMoveStart',         0)
   call s:init_map('moveend',   '<leader>te', 'FtermMoveEnd',           0)
   for i in range(1, 10)
     let Pattern = s:get_pattern()
