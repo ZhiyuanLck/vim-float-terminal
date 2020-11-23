@@ -125,6 +125,7 @@ optional arguments:
 | `g:fterm_root_marker`         | `['.root', '.git', '.svn', '.hg', '.project']` | markers that mark current directory as root directory
 | `g:fterm_root_search_level`   | `5`                                            | max level when searching root directory
 | `g:fterm_expanduser`          | `1`                                            | try to expand '~' in command string
+| `g:fterm_toggle_default`      | `FtermNew`                                     | command to run when there is no terminal to toggle
 | `g:fterm_exclude_cmdline`     | `1`                                            | exclude the cmdline when calculating the height of terminal
 | `g:fterm_exclude_statusline`  | `1`                                            | exclude the statusline when calculating the height of terminal
 | `g:fterm_exclude_tabline`     | `1`                                            | exclude the tabline when calculating the height of terminal
