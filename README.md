@@ -47,7 +47,8 @@ optional arguments:
 
 ------------------------------------------------------------------------------
 
-usage: Fterm new [-h] [--cwd CWD] [--cmd CMD [CMD ...]] [--width width] [--height height]
+usage: Fterm new [-h] [--cwd CWD] [--cmd CMD [CMD ...]]
+    [--width width] [--height height] [--title title]
 
 optional arguments:
   -h, --help           show this help message and exit
@@ -55,6 +56,7 @@ optional arguments:
   --cmd CMD [CMD ...]  run command in new terminal
   --width width        width of the popup window
   --height height      height of the popup window
+  --title title        set the title of the terminal
 
 ------------------------------------------------------------------------------
 

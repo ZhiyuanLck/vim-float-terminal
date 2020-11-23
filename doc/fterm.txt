@@ -120,13 +120,15 @@ Commands                                                      *fterm-commands*
   Main command used to control the terminal.
 
                                                                    *Fterm-new*
-:Fterm new [-h] [--cwd CWD] [--cmd CMD [CMD ...]]
+:Fterm new [-h] [--cwd CWD] [--cmd CMD [CMD ...]] [--title title]
            [--width width] [--height height]
   Create a new terminal.
   If '--cwd' is set, cwd of terminal is set to the specified path.
   If '--cmd' is set, run commands otherwise run command specified by
   |g:fterm_shell|. Commands are processed by <f-args> so you don't need to
   quote them.
+  If '--title' is set, the title of the terminal will be set to the value of
+  this option.
   If '--width' and/or '--height' is set, global value of  width and/or height
   of the popup will be covered. Width and height are saved for every popup
   terminal respectively.
@@ -134,6 +136,10 @@ Commands                                                      *fterm-commands*
   Create terminal with default shell:
 >
   :Fterm new
+<
+  Create terminal with custom title:
+>
+  :Fterm new --title custom
 <
   Create terminal under home directory:
 >

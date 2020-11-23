@@ -28,13 +28,20 @@ class Manager(object):
         subparsers = parser.add_subparsers(dest='mode', help='Fterm sub-command help')
         default_width = ftget("width", 0.75, 2)
         default_height = ftget("height", 0.75, 2)
+        default_title = ftget("title", "'fterm'")
         # new command
         parser_new = subparsers.add_parser('new')
         parser_new.register('action', 'extend', ExtendAction)
         parser_new.add_argument('--cwd', help='cwd of terminal')
-        parser_new.add_argument('--cmd', nargs="+", type=str, action="extend", help='run command in new terminal')
-        parser_new.add_argument('--width', metavar='width', type=float, default=default_width, help='width of the popup window')
-        parser_new.add_argument('--height', metavar='height', type=float, default=default_height, help='height of the popup window')
+        parser_new.add_argument('--cmd', nargs="+", type=str, action="extend",
+                help='run command in new terminal')
+        parser_new.add_argument('--width', metavar='width', type=float,
+                default=default_width, help='width of the popup window')
+        parser_new.add_argument('--height', metavar='height', type=float,
+                default=default_height, help='height of the popup window')
+        parser_new.add_argument('--title', metavar='title', type=str,
+                dest='init_title', default=default_title,
+                help='set the title of terminal')
         # toggle command
         parser_toggle = subparsers.add_parser('toggle')
         # kill command

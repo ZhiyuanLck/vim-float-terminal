@@ -11,7 +11,7 @@ class Fterm(object):
         self.args = vars(args)
         self.lastbuf = vimeval("bufnr('%')", 1)
         self.set_cwd()
-        self.title = ftget("title", "'fterm'")
+        self.set_title()
         self.set_exclude()
         self.set_geometry()
         self.init_term()
@@ -22,6 +22,10 @@ class Fterm(object):
             self.cwd = get_cwd()
         else:
             self.cwd = str(Path(cwd).expanduser().resolve())
+
+    def set_title(self):
+        title = ftget("title", "'fterm'")
+        self.title = self.args.get("init_title", title)
 
     def set_exclude(self):
         self.exclude_cmdline = ftget("fterm_exclude_cmdline", 1) == '1'
