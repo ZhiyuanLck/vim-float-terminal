@@ -79,6 +79,11 @@ g:fterm_expanduser                                        *g:fterm_expanduser*
   '/home/username'.
   Default 1.
 
+g:fterm_toggle_default                                *g:fterm_toggle_default*
+  Save the command that is used by |:FtermToggle| when there is no terminal to
+  toggle.
+  Default "FtermNew".
+
 g:fterm_exclude_cmdline                              *g:fterm_exclude_cmdline*
   Exclude the cmdline when calculating the height of terminal.
   Default 1.
@@ -97,16 +102,16 @@ g:fterm_exclude_signcolumns                      *g:fterm_exclude_signcolumns*
 
 g:fterm_borderchars                                      *g:fterm_borderchars*
   Characters of the whole window border.
-  Default ['─', '│', '─', '│', '┌', '┐', '┘', '└'].
+  Default ["─", "│", "─", "│", "┌", "┐", "┘", "└"].
 
 g:fterm_termline_pos                                    *g:fterm_termline_pos*
   Pos of the termline.
-  Value can be one of ['outertop', 'innertop', 'outerbottom', 'innerbottom'].
-  Default 'outertop'.
+  Value can be one of ["outertop", "innertop", "outerbottom", "innerbottom"].
+  Default "outertop".
 
 g:fterm_title                                                  *g:fterm_title*
   Default title name that is shown in termline.
-  Default 'fterm'.
+  Default "fterm".
 
 ==============================================================================
 Commands                                                      *fterm-commands*
@@ -156,15 +161,13 @@ Commands                                                      *fterm-commands*
   :Fterm new
 <
 
-                                                                *Fterm-toggle*
-:Fterm toggle [-h] [--cwd CWD] [--cmd CMD [CMD ...]]
-              [--width width] [--height height]
-  If there exists no terminal created by |:FtermNew| or |:FtermToggle|, this
-  command is equal to |:FtermNew|.
+:Fterm toggle [-h]                                              *Fterm-toggle*
+  If there exists no terminal created by |:FtermNew|, run commands specified
+  by |g:fterm_toggle_default|.
   If fterm is visible, hide current terminal, else show the current terminal.
 
 :FtermToggle                                                    *:FtermToggle*
-  Toggle an existed terminal or create a new terminal. Equal to
+  Toggle an existed terminal or run default command. Equal to
 >
   :Fterm toggle
 <
@@ -397,7 +400,7 @@ g:fterm_noquit                                                *g:fterm_noquit*
 ==============================================================================
 Edit file from terminal                                      *fterm-edit-file*
 
-Inside terminal you can use command 'fterm' instead of 'vim' to open file in
+Inside terminal you can use command "fterm" instead of "vim" to open file in
 vim. You can customize the open command, see |g:fterm_open_cmd|.
 
 The shell script borrow the code from |floaterm|:

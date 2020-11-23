@@ -18,6 +18,7 @@ call s:init_var('use_root', 1)
 call s:init_var('root_marker', ['.root', '.git', '.svn', '.hg', '.project'])
 call s:init_var('root_search_level', 5)
 call s:init_var('expanduser', 1)
+call s:init_var('toggle_default', 'FtermNew')
 " termline
 call s:init_var('borderchars',
       \ ['─', '│', '─', '│', '┌', '┐', '┘', '└'])

@@ -58,14 +58,10 @@ optional arguments:
 
 ------------------------------------------------------------------------------
 
-usage: Fterm toggle [-h] [--cwd CWD] [--cmd CMD [CMD ...]] [--width width] [--height height]
+usage: Fterm toggle [-h]
 
 optional arguments:
   -h, --help           show this help message and exit
-  --cwd CWD            cwd of terminal
-  --cmd CMD [CMD ...]  run command in new terminal (only in creation mode)
-  --width width        width of the popup window (only in creation mode)
-  --height height      height of the popup window (only in creation mode)
 
 ------------------------------------------------------------------------------
 

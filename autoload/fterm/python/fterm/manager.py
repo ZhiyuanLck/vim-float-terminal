@@ -37,11 +37,6 @@ class Manager(object):
         parser_new.add_argument('--height', metavar='height', type=float, default=default_height, help='height of the popup window')
         # toggle command
         parser_toggle = subparsers.add_parser('toggle')
-        parser_toggle.register('action', 'extend', ExtendAction)
-        parser_toggle.add_argument('--cwd', help='cwd of terminal')
-        parser_toggle.add_argument('--cmd', nargs="+", type=str, action="extend", help='run command in new terminal (only in creation mode)')
-        parser_toggle.add_argument('--width', metavar='width', type=float, default=default_width, help='width of the popup window (only in creation mode)')
-        parser_toggle.add_argument('--height', metavar='height', type=float, default=default_height, help='height of the popup window (only in creation mode)')
         # kill command
         parser_kill = subparsers.add_parser('kill')
         parser_kill.add_argument('--all', default=False, dest="kill_all", action='store_true', help='kill all terminals')
@@ -114,7 +109,8 @@ class Manager(object):
 
     def toggle_term(self):
         if self.empty():
-            self.create_term()
+            default = ftget("toggle_default", "'FtermNew'")
+            vimcmd(default)
         elif self.show:
             self.get_curterm().close_popup()
             self.show = False
