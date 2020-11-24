@@ -1,3 +1,5 @@
+let s:cterm_fg = synIDattr(hlID("Normal"), "fg", "cterm") ? "fg" : 251
+let s:cterm_bg = synIDattr(hlID("Normal"), "bg", "cterm") ? "bg" : 235
 let s:default_highlights = {
       \ "fterm_hl_border": {
       \   "ctermfg": 10,
@@ -27,12 +29,12 @@ let s:default_highlights = {
       \   "ctermbg": 245,
       \   },
       \ "fterm_hl_terminal_body": {
-      \   "ctermfg": "fg",
-      \   "ctermbg": "bg",
+      \   "ctermfg": s:cterm_fg,
+      \   "ctermbg": s:cterm_bg,
       \   },
       \ "fterm_hl_termline_body": {
-      \   "ctermfg": "fg",
-      \   "ctermbg": "bg",
+      \   "ctermfg": s:cterm_fg,
+      \   "ctermbg": s:cterm_fg,
       \   },
       \ }
 
