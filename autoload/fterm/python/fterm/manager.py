@@ -1,9 +1,19 @@
 import vim
 import argparse
+import functools
 
 from .utils import *
 from .terminal import Fterm
 from .ftermline import FtermLine
+
+def internal_wrapper(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        args[0].inner = True
+        func(*args, **kwargs)
+        args[0].inner = False
+    return wrapper
+
 
 class ExtendAction(argparse.Action):
 
@@ -19,6 +29,7 @@ class Manager(object):
         self.cur_termnr = -1
         self.show = False
         self.init_parser()
+        self.inner = False
 
     def issue(self):
         return vimeval("fterm#issue#patch_821990()", 1)
@@ -99,6 +110,7 @@ class Manager(object):
     def get_curterm(self):
         return None if self.empty() else self.term_list[self.cur_termnr]
 
+    @internal_wrapper
     def create_term(self):
         """
         1. create from empty
@@ -106,7 +118,8 @@ class Manager(object):
         3. create when fterm is show
         """
         curterm = self.get_curterm()
-        if curterm is not None:
+        if self.show:
+            self.show = False
             curterm.close_popup()
         term = Fterm(self.termline, self.args)
         self.cur_termnr += 1
@@ -114,18 +127,20 @@ class Manager(object):
         term.create_popup()
         self.show = True
 
+    @internal_wrapper
     def toggle_term(self):
         if self.empty():
             default = ftget("toggle_default", "'FtermNew'")
             vimcmd(default)
         elif self.show:
+            self.show = False # this line must be in front of the next line
             self.get_curterm().close_popup()
-            self.show = False
         else:
             self.get_curterm().create_popup()
             return_to_terminal()
             self.show = True
 
+    @internal_wrapper
     def kill_single_term(self):
         if self.empty():
             vimcmd("echom 'there is no terminal to kill'")
@@ -142,28 +157,31 @@ class Manager(object):
             self.get_curterm().create_popup()
             return_to_terminal()
 
+    @internal_wrapper
     def quit(self):
         if not self.show or self.empty():
             return
         term = self.term_list.pop(self.cur_termnr)
+        self.show = False
         term.close_popup()
         term.kill_term()
         if self.cur_termnr >= len(self.term_list): # no terminal on the right
             self.cur_termnr -= 1
-        self.show = False
 
+    @internal_wrapper
     def kill_all_term(self):
         if self.empty():
             vimcmd("echom 'there is no terminal to kill'")
             return
         if self.show:
-            self.get_curterm().close_popup()
             self.show = False
+            self.get_curterm().close_popup()
         for term in self.term_list:
             term.kill_term()
         self.cur_termnr = -1
         self.term_list.clear()
 
+    @internal_wrapper
     def select_term(self, termnr):
         if termnr > len(self.term_list):
             vimsg("Error", "invalid argument: {}".format(termnr))
@@ -177,12 +195,12 @@ class Manager(object):
         self.get_curterm().create_popup()
         return_to_terminal()
 
+    @internal_wrapper
     def move(self):
         left = self.args.move_left
         right = self.args.move_right
         to = self.args.move_to
         end = self.args.move_end
-        #  print(left, right, to)
         termline = self.termline
         if end:
             termline.move_end()
@@ -196,6 +214,7 @@ class Manager(object):
         if right is not None:
             termline.move_right(right)
 
+    @internal_wrapper
     def edit_in_vim(self, path):
         print(path)
         if self.show:
@@ -203,6 +222,7 @@ class Manager(object):
         cmd = ftget("open_cmd", "'tabedit'")
         vimcmd("{} {}".format(cmd, path))
 
+    @internal_wrapper
     def async_run(self):
         cmd = []
         cwd = vimeval("shellescape(getcwd())")
@@ -216,11 +236,15 @@ class Manager(object):
             self.get_curterm().create_popup()
             self.show = True
         bufnr = self.get_curterm().bufnr
-        #  cmd = 'ls'
         vimcmd(r"""call term_sendkeys({}, "{}\<cr>")""".format(bufnr, cmd))
         if need_return:
             return_to_terminal()
-        #  vimcmd(r"""call feedkeys("{}\<cr>")""".format(cmd))
+
+    def winleave_cb(self):
+        if not self.inner and self.show:
+            print("close popup")
+            self.toggle_term()
+
 
 manager = Manager()
 

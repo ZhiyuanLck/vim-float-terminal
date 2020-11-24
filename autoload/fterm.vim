@@ -19,12 +19,6 @@ function! fterm#py(cmd) abort
 endfunction
 
 function! fterm#cmd(...) abort
-  " let arglist = []
-  " for arg in a:000
-  " endfor
-  " call map(arglist, {_, val -> shellescape(val)})
-  " echom a:000
-  " echom arglist
   exec g:ft_py "manager.start(vimeval('a:000'))"
 endfunction
 
@@ -46,3 +40,8 @@ endfunction
 function! fterm#edit(bufnr, path) abort
   exec g:ft_py printf("manager.edit_in_vim('%s')", a:path)
 endfunction
+
+augroup FtermWinLeave
+  autocmd!
+  autocmd WinLeave * exec g:ft_py "manager.winleave_cb()"
+augroup END
