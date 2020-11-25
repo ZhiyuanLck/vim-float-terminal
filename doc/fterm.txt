@@ -14,7 +14,7 @@ Mappings                                                      |fterm-mappings|
 Highlights                                                  |fterm-highlights|
 Quick quit                                                  |fterm-quick-quit|
 Edit file from terminal                                      |fterm-edit-file|
-Support for |asyncrun|                                |fterm-support-asyncrun|
+Support for asyncrun                                  |fterm-support-asyncrun|
 Known issues                                                    |fterm-issues|
 Reference                                                    |fterm-reference|
 
@@ -123,6 +123,11 @@ Commands                                                      *fterm-commands*
 :Fterm [-h] {new,toggle,kill,select,settitle,move,quit} ...            *Fterm*
   Main command used to control the terminal.
 
+:FtermNew                                                          *:FtermNew*
+  Create a new terminal. Alias for
+>
+  :Fterm new
+<
                                                                    *Fterm-new*
 :Fterm new [-h] [--cwd CWD] [--cmd CMD [CMD ...]] [--title title]
            [--width width] [--height height]
@@ -165,10 +170,11 @@ Commands                                                      *fterm-commands*
 >
   :Fterm new --width 0.8 --height 20
 <
-:FtermNew                                                          *:FtermNew*
-  Create a new terminal. Equal to
+
+:FtermToggle                                                    *:FtermToggle*
+  Toggle an existed terminal or run default command. Alias for
 >
-  :Fterm new
+  :Fterm toggle
 <
 
 :Fterm toggle [-h]                                              *Fterm-toggle*
@@ -176,45 +182,39 @@ Commands                                                      *fterm-commands*
   by |g:fterm_toggle_default|.
   If fterm is visible, hide current terminal, else show the current terminal.
 
-:FtermToggle                                                    *:FtermToggle*
-  Toggle an existed terminal or run default command. Equal to
+:FtermKill                                                        *:FtermKill*
+  Kill current terminal. Alias for
 >
-  :Fterm toggle
+  :Fterm kill
+<
+
+:FtermKillAll                                                  *:FtermKillAll*
+  Kill all terminals. Alias for
+>
+  :Fterm kill --all
 <
 
 :Fterm kill [-h] [--all]                                          *Fterm-kill*
   Kill current terminal and show next terminal if possible.
   If '--all' is set, kill all terminals.
 
-:FtermKill                                                        *:FtermKill*
-  Kill current terminal. Equal to
+:FtermSelect [-h] terminal_number                               *:FtermSelect*
+  Show the terminal with specified number. Alias for
 >
-  :Fterm kill
-<
-
-:FtermKillAll                                                  *:FtermKillAll*
-  Kill all terminals. Equal to
->
-  :Fterm kill --all
+  :Fterm select
 <
 
 :Fterm select [-h] terminal_number                              *Fterm-select*
   Show the terminal with specified number.
 
-:FtermSelect [-h] terminal_number                               *:FtermSelect*
-  Show the terminal with specified number. Equal to
+:FtermSetTitle [-h] title                                      *FtermSetTitle*
+  Set the title of current terminal. Alias for
 >
-  :Fterm select
+  :Fterm settitle
 <
 
 :Fterm settitle [-h] title                                    *Fterm-settitle*
   Set the title of current terminal.
-
-:FtermSetTitle [-h] title                                      *FtermSetTitle*
-  Set the title of current terminal. Equal to
->
-  :Fterm settitle
-<
 
 :Fterm move [-h] [--left N] [--right N] [--to N] [--end]          *Fterm-move*
   Move the termtab on termline.
@@ -229,31 +229,31 @@ Commands                                                      *fterm-commands*
 <
 
 :FtermMoveTo N                                                  *:FtermMoveTo*
-  Move current termtab to pos N of the termline. See |Fterm-move|. Equal to
+  Move current termtab to pos N of the termline. See |Fterm-move|. Alias for
 >
   :Fterm move --to N
 <
 
 :FtermMoveStart                                              *:FtermMoveStart*
-  Move current termtab to start of the termline. Equal to
+  Move current termtab to start of the termline. Alias for
 >
   :Fterm move --to 1
 <
 
 :FtermMoveEnd                                                  *:FtermMoveEnd*
-  Move current termtab to end of the termline. Equal to
+  Move current termtab to end of the termline. Alias for
 >
   :Fterm move --end
 <
 
 :FtermMoveLeft                                                *:FtermMoveLeft*
-  Exchange the position with the left terminal. Equal to
+  Exchange the position with the left terminal. Alias for
 >
   :Fterm move --left 1
 <
 
 :FtermMoveRight                                              *:FtermMoveRight*
-  Exchange the position with the right terminal. Equal to
+  Exchange the position with the right terminal. Alias for
 >
   :Fterm move --right 1
 <
@@ -394,7 +394,7 @@ built-in function |match()|.
   Quit current terminal and close popup.
 
 :FtermQuit                                                        *:FtermQuit*
-  Quit current terminal and close popup. Equal to
+  Quit current terminal and close popup. Alias for
 >
   :Fterm quit
 <
@@ -428,16 +428,16 @@ The shell script borrow the code from |floaterm|:
 https://github.com/voldikss/vim-floaterm/blob/master/bin/floaterm
 
 ==============================================================================
-Support for |asyncrun|
+Support for asyncrun                                  *fterm-support-asyncrun*
 
-Add following lines to support running commands asynchronously in fterm:
+Add following lines to support running commands via |asyncrun| in fterm:
 >
   let g:asyncrun_runner = get(g:, 'asyncrun_runner', {})
   let g:asyncrun_runner.fterm = function('fterm#async_runner')
 <
 
 ==============================================================================
-Known issues
+Known issues                                                    *fterm-issues*
 
 1. Cursor position wrong in terminal popup with finished job.
   Fixed in patch-8.2.1990.
