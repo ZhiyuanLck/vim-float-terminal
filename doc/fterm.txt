@@ -111,6 +111,12 @@ g:fterm_title                                                  *g:fterm_title*
   Default title name that is shown in termline.
   Default "fterm".
 
+g:fterm_restore_curpos                                *g:fterm_restore_curpos*
+  If set to 1, fterm will try to restore the cursor position after reopening
+  the terminal in popup, otherwill fterm will always enter terminal mode.
+  Require patch 8.2.1978: https://github.com/vim/vim/releases/tag/v8.2.1978
+  Default 1.
+
 ==============================================================================
 Commands                                                      *fterm-commands*
 

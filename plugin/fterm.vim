@@ -19,6 +19,7 @@ call s:init_var('root_marker', ['.root', '.git', '.svn', '.hg', '.project'])
 call s:init_var('root_search_level', 5)
 call s:init_var('expanduser', 1)
 call s:init_var('toggle_default', 'FtermNew')
+call s:init_var('restore_curpos', 1)
 " termline
 call s:init_var('borderchars',
       \ ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
@@ -42,11 +43,14 @@ call s:init_var('cmd_lazygit', 1)
 function! s:init_map(map, lhs, rhs, mode=1) abort
   call s:init_var('map_'.a:map, a:lhs)
   exec "let l:lhs = g:fterm_map_".a:map
+  let has_cmd = has("patch-8.2.1978")
+  let t_pre = has_cmd ? '<cmd>' : '<c-\><c-n>:<c-u>'
+  let n_pre = has_cmd ? '<cmd>' : ':<c-u>'
   if a:mode >= 0
-    exec printf('tnoremap <silent>%s <c-\><c-n>:<c-u>%s<cr>', l:lhs, a:rhs)
+    exec printf('tnoremap <silent>%s %s%s<cr>', l:lhs, t_pre, a:rhs)
   endif
   if a:mode >= 1
-    exec printf("noremap <silent>%s :<c-u>%s<cr>", l:lhs, a:rhs)
+    exec printf('noremap <silent>%s %s%s<cr>', l:lhs, n_pre, a:rhs)
   endif
 endfunction
 

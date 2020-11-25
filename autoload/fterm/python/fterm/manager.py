@@ -28,8 +28,14 @@ class Manager(object):
         self.termline = FtermLine(self)
         self.cur_termnr = -1
         self.show = False
+        self.last_mode_t = True
+        self.set_feature()
         self.init_parser()
         self.inner = False
+
+    def set_feature(self):
+        self.features = dict()
+        self.features['<cmd>'] = vimeval("has('patch-8.2.1978')") == '1'
 
     def issue(self):
         return vimeval("fterm#issue#patch_821990()", 1)
@@ -121,7 +127,7 @@ class Manager(object):
         if self.show:
             self.show = False
             curterm.close_popup()
-        term = Fterm(self.termline, self.args)
+        term = Fterm(self)
         self.cur_termnr += 1
         self.term_list.insert(self.cur_termnr, term)
         term.create_popup()
@@ -137,7 +143,7 @@ class Manager(object):
             self.get_curterm().close_popup()
         else:
             self.get_curterm().create_popup()
-            return_to_terminal()
+            self.get_curterm().restore()
             self.show = True
 
     @internal_wrapper
@@ -155,7 +161,7 @@ class Manager(object):
             self.cur_termnr -= 1
         if self.show and not self.empty():
             self.get_curterm().create_popup()
-            return_to_terminal()
+            self.get_curterm().restore()
 
     @internal_wrapper
     def quit(self):
@@ -185,7 +191,7 @@ class Manager(object):
     def select_term(self, termnr):
         if termnr > len(self.term_list):
             vimsg("Error", "invalid argument: {}".format(termnr))
-            return_to_terminal()
+            self.get_curterm().restore()
             return
         if self.show:
             self.get_curterm().close_popup()
@@ -193,7 +199,7 @@ class Manager(object):
             self.show = True
         self.cur_termnr = termnr - 1
         self.get_curterm().create_popup()
-        return_to_terminal()
+        self.get_curterm().restore()
 
     @internal_wrapper
     def move(self):
@@ -216,7 +222,6 @@ class Manager(object):
 
     @internal_wrapper
     def edit_in_vim(self, path):
-        print(path)
         if self.show:
             self.toggle_term()
         cmd = ftget("open_cmd", "'tabedit'")
@@ -238,11 +243,10 @@ class Manager(object):
         bufnr = self.get_curterm().bufnr
         vimcmd(r"""call term_sendkeys({}, "{}\<cr>")""".format(bufnr, cmd))
         if need_return:
-            return_to_terminal()
+            self.get_curterm().restore()
 
     def winleave_cb(self):
         if not self.inner and self.show:
-            print("close popup")
             self.toggle_term()
 
 

@@ -65,11 +65,6 @@ def get_cwd():
 def vimsg(type, msg):
     vimcmd(r"""echohl {} | echom "{}" | echohl None""".format(type, msg))
 
-def return_to_terminal():
-    #  vimcmd("norm! a")
-    if vimeval("mode()") == 'n':
-        vimcmd("call feedkeys('a')")
-
 def get_termline_pos():
     pos = ['innertop', 'outertop', 'innerbottom', 'outerbottom']
     termline_pos = ftget("termline_pos", "'innertop'")

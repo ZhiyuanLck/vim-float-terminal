@@ -6,10 +6,14 @@ from .utils import *
 from .ftermline import FtermLine
 
 class Fterm(object):
-    def __init__(self, termline, args):
-        self.termline = termline
-        self.args = vars(args)
-        self.lastbuf = vimeval("bufnr('%')", 1)
+    def __init__(self, manager):
+        self.manager = manager
+        self.termline = manager.termline
+        self.args = vars(manager.args)
+        self.features = manager.features
+        #  self.lastbuf = vimeval("bufnr('%')", 1)
+        self.last_mode_t = True
+        self.last_pos = []
         self.set_cwd()
         self.set_title()
         self.set_exclude()
@@ -152,8 +156,22 @@ class Fterm(object):
         self.termline.build_line()
 
     def close_popup(self):
+        self.record()
         vimcmd("call popup_close({})".format(self.winid))
         self.termline.close_popup()
 
     def kill_term(self):
         vimcmd("call fterm#terminal#kill({})".format(self.bufnr))
+
+    def record(self):
+        self.last_mode_t = self.features['<cmd>'] and vimeval("mode()") == 't'
+        ignore = ftget("restore_curpos", 1) == '0' or self.last_mode_t
+        self.last_pos = [] if ignore else vimeval("getcurpos()")
+
+    def restore(self):
+        if ftget("restore_curpos", 1) == '0' or not self.features['<cmd>']:
+            if vimeval("mode()") == 'n':
+                vimcmd("call feedkeys('a')")
+                return
+        if not self.last_mode_t and self.last_pos:
+            vimcmd("call setpos('.', {})".format(self.last_pos))
