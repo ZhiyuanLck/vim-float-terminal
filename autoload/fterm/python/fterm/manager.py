@@ -143,7 +143,6 @@ class Manager(object):
             self.get_curterm().close_popup()
         else:
             self.get_curterm().create_popup()
-            self.get_curterm().restore()
             self.show = True
 
     @internal_wrapper
@@ -161,7 +160,6 @@ class Manager(object):
             self.cur_termnr -= 1
         if self.show and not self.empty():
             self.get_curterm().create_popup()
-            self.get_curterm().restore()
 
     @internal_wrapper
     def quit(self):
@@ -199,7 +197,6 @@ class Manager(object):
             self.show = True
         self.cur_termnr = termnr - 1
         self.get_curterm().create_popup()
-        self.get_curterm().restore()
 
     @internal_wrapper
     def move(self):

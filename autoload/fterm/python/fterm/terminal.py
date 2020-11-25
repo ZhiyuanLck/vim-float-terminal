@@ -154,6 +154,7 @@ class Fterm(object):
         self.winid = vimeval("popup_create({}, {})".format(self.bufnr, str(opts)), 1)
         self.map_quit()
         self.termline.build_line()
+        self.restore()
 
     def close_popup(self):
         self.record()
