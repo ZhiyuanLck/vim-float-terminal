@@ -135,6 +135,7 @@ class Fterm(object):
             vimcmd(r"noremap <silent><buffer>{} <c-\><c-n>:FtermQuit<cr>".format(quit))
 
     def create_popup(self):
+        vimcmd("call fterm#block_map()")
         opts = {
                 "maxwidth":  self.width,
                 "minwidth":  self.width,
@@ -160,6 +161,7 @@ class Fterm(object):
         self.record()
         vimcmd("call popup_close({})".format(self.winid))
         self.termline.close_popup()
+        vimcmd("call fterm#restore_map()")
 
     def kill_term(self):
         vimcmd("call fterm#terminal#kill({})".format(self.bufnr))

@@ -119,7 +119,7 @@ class FtermLine(object):
     def rebuild(self):
         self.close_popup()
         self.build_line()
-        return_to_terminal()
+        self.manager.get_curterm().restore()
 
     def set_title(self, title):
         manager = self.manager

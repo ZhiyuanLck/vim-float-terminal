@@ -41,6 +41,63 @@ function! fterm#edit(bufnr, path) abort
   exec g:ft_py printf("manager.edit_in_vim('%s')", a:path)
 endfunction
 
+function! fterm#map(modes, nore, args, lhs, rhs, block) abort
+  let all_modes = 'nvxsoilct'
+  for mode in split(a:modes == '' ? 'nvo' : a:modes, '\zs')
+    if stridx(all_modes, mode) != -1
+      if a:block
+        let old_map = maparg(a:lhs, mode, 0, 1)
+      endif
+      exec printf("%s%smap %s %s %s",
+            \ mode, a:nore ? 'nore' : '', a:args, a:lhs, a:rhs
+            \ )
+      if a:block
+        let g:fterm_blocked_mapping = get(g:, "fterm_blocked_mapping", [])
+        call add(g:fterm_blocked_mapping, {'map': maparg(a:lhs, mode, 0, 1), 'mode': mode, 'old_map': old_map})
+        if old_map == {}
+          exec mode."unmap ".a:lhs
+        else
+          call mapset(mode, 0, old_map)
+        endif
+      endif
+    endif
+  endfor
+endfunction
+
+function! s:set_map(map_dict) abort
+endfunction
+
+function! fterm#block_map() abort
+  for map_dict in g:fterm_blocked_mapping
+    call mapset(map_dict.mode, 0, map_dict.map)
+  endfor
+endfunction
+
+function! fterm#restore_map() abort
+  for map_dict in g:fterm_blocked_mapping
+    let old_map = map_dict.old_map
+    let map = map_dict.map
+    let mode = map_dict.mode
+    if old_map == {}
+      exec mode."unmap ".map.lhsraw
+    else
+      call mapset(mode, 0, old_map)
+    endif
+  endfor
+endfunction
+
+function! fterm#custom_map() abort
+  try
+    for m in g:fterm_custom_mapping
+      call fterm#map(m[0], m[1], m[2], m[3], m[4], m[5])
+    endfor
+  catch
+    echohl Error
+    echom "wrong cumstom mapping in 'g:fterm_custom_mapping'!"
+    echohl None
+  endtry
+endfunction
+
 augroup FtermWinLeave
   autocmd!
   autocmd WinLeave * exec g:ft_py "manager.winleave_cb()"

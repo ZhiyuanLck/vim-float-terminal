@@ -274,33 +274,14 @@ Mappings                                                      *fterm-mappings*
 
 Fterm sets some default mappings for you. You can change single mapping by
 change the value of corresponding variable. If you don't like this mappings
-at all and want to define your own from scratch. Set |g:fterm_disable_map| to
-1 to disable all mappings.
+set |g:fterm_disable_map| to 1 to disable all mappings and define your own
+mappings by |g:fterm_custom_map|, which makes it possible to define mappings
+that only work when fterm is shown.
 
 g:fterm_disable_map                                      *g:fterm_disable_map*
   If set to 1, disable all mappings. Then you need to define mappings by
   yourself.
   Default 0.
-
-  Example mapping definition:
->
-  noremap <silent><leader>c :<c-u>FtermNew<cr>
-  tnoremap <silent><leader>c <c-\><c-n>:<c-u>FtermNew<cr>
-  noremap <silent><leader>s :<c-u>FtermToggle<cr>
-  tnoremap <silent><leader>s <c-\><c-n>:<c-u>FtermToggle<cr>
-  noremap <silent><leader>k :<c-u>FtermKill<cr>
-  tnoremap <silent><leader>k <c-\><c-n>:<c-u>FtermKill<cr>
-  noremap <silent><leader>a :<c-u>FtermKillAll<cr>
-  tnoremap <silent><leader>a <c-\><c-n>:<c-u>FtermKillAll<cr>
-  tnoremap <silent><leader>, <c-\><c-n>:<c-u>call fterm#set_title()<cr>
-  tnoremap <silent><leader>tl <c-\><c-n>:<c-u>FtermMoveRight 1<cr>
-  tnoremap <silent><leader>th <c-\><c-n>:<c-u>FtermMoveLeft 1<cr>
-  tnoremap <silent><leader>ta <c-\><c-n>:<c-u>FtermMoveStart<cr>
-  tnoremap <silent><leader>te <c-\><c-n>:<c-u>FtermMoveEnd<cr>
-  for i in range(1, 9)
-    exec printf('tnoremap <silent><m-%d> <c-\><c-n>:<c-u>FtermSelect %d<cr>', i, i)
-  endfor
-<
 
 g:fterm_map_new                                              *g:fterm_map_new*
   Mapping to create new terminal. See |Fterm-new| and |:FtermNew|.
@@ -347,6 +328,41 @@ g:fterm_map_moveend                                      *g:fterm_map_moveend*
 g:fterm_map_select                                        *g:fterm_map_select*
   Prefix of mappings to show terminal with specified number.
   'm*' is for meta key and 'c*' is for control CTRL, others are normal prefix.
+
+g:fterm_custom_map                                        *g:fterm_custom_map*
+  Two-dimen list used to define custom mappings. Every element of list is an
+  array of lenth 6. These 6 elements are fed to the function |fterm#map()|,
+  which accepts 6 arguments:
+      fterm#map({modes}, {nore}, {args}, {lhs}, {rhs}, {block})
+    {modes} is a string, valid characters of which are "nvxsoilct". Invalid
+    charater will be ignored and empty string will be replaced with "nvo".
+    {nore} is 0 or 1. See |:nore| for details.
+    {args} is string of |:map-arguments|.
+    {lhs} means left-hand-side.
+    {rhs} means right-hand-side.
+    {block} is 0 or 1. Decide whether to block mappings. Blocking mapping
+    means the mapping will cover the original mapping when fterm is shown and
+    then the mapping will be restored after fterm is hidden.
+
+  Example mapping definition:
+>
+  let g:fterm_custom_mapping = [
+      \ [ '', 1, '<silent>', '<leader>c', ':<c-u>FtermNew<cr>', 0],
+      \ [ 't', 1, '<silent>', '<leader>c', '<c-\><c-n>:<c-u>FtermNew<cr>', 0],
+      \ ]
+<
+  If your vim has patch 8.2.1978 `:echo has('patch-8.2.1978')`
+>
+  let g:fterm_custom_mapping = [
+      \ [ 'tnvo', 1, '<silent>', '<leader>c', '<cmd>FtermNew<cr>', 0],
+      \ ]
+<
+  An expample of blocked mapping:
+>
+  let g:fterm_custom_mapping = [
+      \ [ 'tnvo', 1, '<silent>', '<leader>ta', '<cmd>FtermMoveStart<cr>', 1],
+      \ ]
+<
 
 ==============================================================================
 Highlights                                                  *fterm-highlights*

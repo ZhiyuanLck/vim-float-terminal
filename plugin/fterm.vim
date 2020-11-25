@@ -36,22 +36,20 @@ call s:init_var('hl_termline_body', 'fterm_hl_termline_body')
 call s:init_var('disable_map', 0)
 call s:init_var('map_select', 'm*')
 call s:init_var('map_quit', 'q')
+call s:init_var('blocked_mapping', [])
+call s:init_var('custom_mapping', [])
 " cmd
 call s:init_var('cmd_lazygit', 1)
 
-" 0 for tmap, 1 for tmap and map
-function! s:init_map(map, lhs, rhs, mode=1) abort
+" 0 for tmap and unblocked map, 1 for tmap and blocked map
+function! s:init_map(map, lhs, rhs, block=0) abort
   call s:init_var('map_'.a:map, a:lhs)
   exec "let l:lhs = g:fterm_map_".a:map
   let has_cmd = has("patch-8.2.1978")
   let t_pre = has_cmd ? '<cmd>' : '<c-\><c-n>:<c-u>'
   let n_pre = has_cmd ? '<cmd>' : ':<c-u>'
-  if a:mode >= 0
-    exec printf('tnoremap <silent>%s %s%s<cr>', l:lhs, t_pre, a:rhs)
-  endif
-  if a:mode >= 1
-    exec printf('noremap <silent>%s %s%s<cr>', l:lhs, n_pre, a:rhs)
-  endif
+  call fterm#map('t', 1, '<silent>', l:lhs, t_pre.a:rhs.'<cr>', 0)
+  call fterm#map('nvo', 1, '<silent>', l:lhs, n_pre.a:rhs.'<cr>', a:block)
 endfunction
 
 function! s:get_pattern() abort
@@ -89,16 +87,17 @@ if g:fterm_disable_map < 1
   call s:init_map('toggle',    '<leader>s',  'FtermToggle')
   call s:init_map('kill',      '<leader>k',  'FtermKill')
   call s:init_map('killall',   '<leader>a',  'FtermKillAll')
-  call s:init_map('settitle',  '<leader>,',  'call fterm#set_title()', 0)
-  call s:init_map('moveright', '<leader>tl', 'FtermMoveRight 1',       0)
-  call s:init_map('moveleft',  '<leader>th', 'FtermMoveLeft 1',        0)
-  call s:init_map('movestart', '<leader>ta', 'FtermMoveStart',         0)
-  call s:init_map('moveend',   '<leader>te', 'FtermMoveEnd',           0)
+  call s:init_map('settitle',  '<leader>,',  'call fterm#set_title()', 1)
+  call s:init_map('moveright', '<leader>tl', 'FtermMoveRight 1',       1)
+  call s:init_map('moveleft',  '<leader>th', 'FtermMoveLeft 1',        1)
+  call s:init_map('movestart', '<leader>ta', 'FtermMoveStart',         1)
+  call s:init_map('moveend',   '<leader>te', 'FtermMoveEnd',           1)
   for i in range(1, 10)
     let Pattern = s:get_pattern()
     let num = i % 10
-    call s:init_map('select'.num, Pattern(num), 'FtermSelect '.num, 0)
+    call s:init_map('select'.num, Pattern(num), 'FtermSelect '.num, 1)
   endfor
 endif
+call fterm#custom_map()
 
 " 异步关闭窗口
