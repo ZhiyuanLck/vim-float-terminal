@@ -249,6 +249,6 @@ class Manager(object):
             self.toggle_term()
 
 
-manager = Manager()
+fterm_manager = Manager()
 
-__all__ = ['manager']
+__all__ = ['fterm_manager']

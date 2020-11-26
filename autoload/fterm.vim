@@ -19,7 +19,7 @@ function! fterm#py(cmd) abort
 endfunction
 
 function! fterm#cmd(...) abort
-  exec g:ft_py "manager.start(vimeval('a:000'))"
+  exec g:ft_py "fterm_manager.start(vimeval('a:000'))"
 endfunction
 
 function! fterm#complete(A, L, P) abort
@@ -34,11 +34,11 @@ function! fterm#set_title() abort
 endfunction
 
 function! fterm#async_runner(opts) abort
-  exec g:ft_py "manager.async_run()"
+  exec g:ft_py "fterm_manager.async_run()"
 endfunction
 
 function! fterm#edit(bufnr, path) abort
-  exec g:ft_py printf("manager.edit_in_vim('%s')", a:path)
+  exec g:ft_py printf("fterm_manager.edit_in_vim('%s')", a:path)
 endfunction
 
 function! fterm#map(modes, nore, args, lhs, rhs, block) abort
@@ -100,5 +100,5 @@ endfunction
 
 augroup FtermWinLeave
   autocmd!
-  autocmd WinLeave * exec g:ft_py "manager.winleave_cb()"
+  autocmd WinLeave * exec g:ft_py "fterm_manager.winleave_cb()"
 augroup END
