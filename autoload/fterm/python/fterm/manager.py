@@ -187,6 +187,8 @@ class Manager(object):
 
     @internal_wrapper
     def select_term(self, termnr):
+        if self.cur_termnr == termnr - 1: # do nothing
+            return
         if termnr > len(self.term_list):
             vimsg("Error", "invalid argument: {}".format(termnr))
             self.get_curterm().restore()
