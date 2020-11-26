@@ -25,6 +25,7 @@ Use vim built-in terminal in popup with a termline.
 
 - Create/toggle/kill terminal in popup quickly.
 - Termline support just like tabline.
+- Blocked mapping only for fterm.
 - Support for |asyncrun.vim|
 
 ==============================================================================
