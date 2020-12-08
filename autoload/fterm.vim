@@ -1,11 +1,21 @@
 let g:ft_py = "py3 "
-exec g:ft_py "import vim, sys, os, re, os.path"
-exec g:ft_py "cwd = vim.eval('expand(\"<sfile>:p:h\")')"
-exec g:ft_py "cwd = re.sub(r'(?<=^.)', ':', os.sep.join(cwd.split('/')[1:])) if os.name == 'nt' and cwd.startswith('/') else cwd"
-exec g:ft_py "sys.path.insert(0, os.path.join(cwd, 'fterm', 'python'))"
+exec g:ft_py "<< END"
+import vim, sys
+from pathlib import Path
+cwd = vim.eval('expand("<sfile>:p:h")')
+cwd = Path(cwd) / '..' / 'python'
+cwd = cwd.resolve()
+sys.path.insert(0, str(cwd))
+from fterm.utils import *
+from fterm.manager import *
+END
+" exec g:ft_py "import vim, sys, os, re, os.path"
+" exec g:ft_py "cwd = vim.eval('expand(\"<sfile>:p:h\")')"
+" exec g:ft_py "cwd = re.sub(r'(?<=^.)', ':', os.sep.join(cwd.split('/')[1:])) if os.name == 'nt' and cwd.startswith('/') else cwd"
+" exec g:ft_py "sys.path.insert(0, os.path.join(cwd, 'fterm', 'python'))"
 
-exec g:ft_py "from fterm.utils import *"
-exec g:ft_py "from fterm.manager import *"
+" exec g:ft_py "from fterm.utils import *"
+" exec g:ft_py "from fterm.manager import *"
 
 let s:home = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 let s:script = fnamemodify(s:home . '/../bin', ':p')
