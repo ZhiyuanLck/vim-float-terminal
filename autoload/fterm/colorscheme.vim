@@ -45,7 +45,9 @@ function! s:get_cmd(name, hl) abort
 endfunction
 
 function! fterm#colorscheme#set() abort
-  let hl_list = get(g:, "fterm_highlights", s:default_highlights)
+  let hl_list = s:default_highlights
+  let extra_list = get(g:, "fterm_highlights", {})
+  call extend(hl_list, extra_list)
   for [name, hl] in items(hl_list)
     let cmd = "highlight! ".name
     for [k, v] in items(hl)
