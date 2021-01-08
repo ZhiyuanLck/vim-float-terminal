@@ -3,8 +3,11 @@ function! s:init_var(name, default) abort
   exec "let g:fterm_".a:name." = var"
 endfunction
 
+let s:windows = has("win32") || has("win64")
+let s:shell = s:windows ? "cmd" : &shell
+
 " attributes
-call s:init_var('shell', &shell)
+call s:init_var('shell', s:shell)
 call s:init_var('width', 0.75)
 call s:init_var('height', 0.75)
 call s:init_var('autoquit', 0)
