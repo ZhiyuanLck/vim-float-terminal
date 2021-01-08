@@ -81,11 +81,14 @@ function! fterm#restore_map() abort
     let old_map = map_dict.old_map
     let map = map_dict.map
     let mode = map_dict.mode
-    if old_map == {}
-      exec mode."unmap ".map.lhsraw
-    else
-      call mapset(mode, 0, old_map)
-    endif
+    try
+      if old_map == {}
+        exec mode."unmap ".map.lhsraw
+      else
+        call mapset(mode, 0, old_map)
+      endif
+    catch /^Vim\%((\a\+)\)\=:E31:/
+    endtry
   endfor
 endfunction
 

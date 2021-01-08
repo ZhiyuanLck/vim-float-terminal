@@ -11,7 +11,8 @@ class FtermLine(object):
         # b : fg = left normal  , bg = right current
         # c : fg = left current , bg = right normal
         self.sep = ftget("termline_sep", "''")
-        self.prop_types = ["info", "normal", "current", "sep_a", "sep_b", "sep_c"]
+        #  self.prop_types = ["info", "normal", "current", "sep_a", "sep_b", "sep_c"]
+        self.prop_types = ["info", "normal", "current"]
         self.init_highlights()
         self.init_text_prop()
 
